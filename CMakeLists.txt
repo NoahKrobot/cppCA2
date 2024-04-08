@@ -7,4 +7,6 @@ add_executable(cppCA2 main.cpp
         headers/Bug.h
         bugs/Bug.cpp
         headers/Crawler.h
-        bugs/Crawler.cpp)
+        bugs/Crawler.cpp
+        headers/Hopper.h
+        bugs/Hopper.cpp)

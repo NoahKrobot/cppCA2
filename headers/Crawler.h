@@ -12,8 +12,6 @@ public:
     string getBugDetails();
     void displayCrawlerDetails();
     void move() override;
-    Crawler(int id, int x, int y, int direction, int size, bool alive);
-
     void updatePositionDependingOnDirection(int direction);
 };
 

@@ -8,8 +8,6 @@
 using namespace std;
 
 void Crawler::move() {
-
-
     random_device rd;
     mt19937 gen(rd());
     switch (direction) {
