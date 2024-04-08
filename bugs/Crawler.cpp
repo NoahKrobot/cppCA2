@@ -56,6 +56,8 @@ void Crawler::move() {
             }
             break;
     }
+
+    path.push_back(position);
 }
 
 void Crawler::updatePositionDependingOnDirection(int direction){
