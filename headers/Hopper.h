@@ -18,6 +18,10 @@ public:
     std::__cxx11::basic_string<char> getBugDetails();
 
     void displayCrawlerDetails();
+
+    void move();
+
+    void updatePositionDependingOnDirection(int direction, int hop);
 };
 
 

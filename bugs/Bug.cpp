@@ -6,7 +6,7 @@ int Bug::getId() const {
     return id;
 }
 
-const double Bug::getPosition() const{
+const Pair Bug::getPosition() const{
     return position;
 }
 

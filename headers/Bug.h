@@ -33,7 +33,7 @@ struct Pair {
 
 class Bug {
 protected:
-    Pair position;
+    Pair position = Pair(0,0);
     int size;
     bool alive;
     int direction;
@@ -45,7 +45,7 @@ public:
 
     int getId() const;
 
-    const double getPosition() const;
+    const Pair getPosition() const;
 
     int getSize() const;
 
