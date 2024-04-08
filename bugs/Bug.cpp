@@ -1,12 +1,12 @@
 #include <iostream>
-#include "./headers/Bug.h"
+#include "../headers/Bug.h"
 
 // getters
 int Bug::getId() const {
     return id;
 }
 
-Pair Bug::getPosition() const{
+const double Bug::getPosition() const{
     return position;
 }
 

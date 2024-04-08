@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_executable(cppCA2 main.cpp
         headers/Bug.h
-        Bug.cpp)
+        bugs/Bug.cpp
+        headers/Crawler.h
+        bugs/Crawler.cpp)

@@ -32,20 +32,20 @@ struct Pair {
 
 
 class Bug {
-    int id;
+protected:
     Pair position;
     int size;
     bool alive;
     int direction;
     list<Pair> path;
-
+    int id;
 public:
     bool isWayBlocked();
     virtual void move();
 
     int getId() const;
 
-    Pair getPosition() const;
+    const double getPosition() const;
 
     int getSize() const;
 
