@@ -9,4 +9,6 @@ add_executable(cppCA2 main.cpp
         headers/Crawler.h
         bugs/Crawler.cpp
         headers/Hopper.h
-        bugs/Hopper.cpp)
+        bugs/Hopper.cpp
+        headers/El_Diagonal.h
+        bugs/El_Diagonal.cpp)

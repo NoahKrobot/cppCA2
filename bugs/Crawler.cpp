@@ -79,7 +79,7 @@ void Crawler::updatePositionDependingOnDirection(int direction){
 string Crawler::getBugDetails() {
     string detailsToPush;
 
-    detailsToPush = to_string(id) + " CRAWLER (" + to_string(position.getX()) + "," + to_string(position.getY()) +
+    detailsToPush = to_string(id) + " Crawler(" + to_string(position.getX()) + "," + to_string(position.getY()) +
                  ") " + to_string(size) +" "+ to_string(direction);
     if (alive){
         detailsToPush += " ALIVE";
