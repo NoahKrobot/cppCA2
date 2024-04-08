@@ -1,0 +1,3 @@
+C:/Users/noah3/OneDrive/CAs/cppCA2/cmake-build-debug/CMakeFiles/cppCA2.dir
+C:/Users/noah3/OneDrive/CAs/cppCA2/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/noah3/OneDrive/CAs/cppCA2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
