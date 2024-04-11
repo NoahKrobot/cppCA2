@@ -87,12 +87,6 @@ void El_Diagonal::updatePositionDependingOnDirection(int direction){
     }
 };
 
-
-
-
-
-
-
 string El_Diagonal::getBugDetails() {
     string detailsToPush;
 
@@ -110,3 +104,4 @@ void El_Diagonal::displayEl_DiagonalDetails() {
     string details = getBugDetails();
     cout<<details<<endl;
 }
+

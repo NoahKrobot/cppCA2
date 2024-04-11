@@ -13,8 +13,6 @@ private:
     int hopLength;
 
 public:
-
-
     std::__cxx11::basic_string<char> getBugDetails();
 
     void displayCrawlerDetails();
@@ -22,6 +20,8 @@ public:
     void move();
 
     void updatePositionDependingOnDirection(int direction, int hop);
+    Hopper(int id, int xValue, int yValue, int direction, int size, int hopLength);
+
 };
 
 
