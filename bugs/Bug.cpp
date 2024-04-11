@@ -50,6 +50,62 @@ void Bug::setAlive(bool alive) {
 
 
 
+bool Bug::isWayBlocked(){
+
+    switch(Bug::getDirection()){
+        //north
+        case 1:{
+            if (Bug::getPosition().getX()-1 == -1){
+                return true;
+            }
+            break;
+        }
+
+        //east
+        case 2:{
+            if (Bug::getPosition().getY()+1 == 10){
+                return true;
+            }
+            break;
+        }
+
+        //south
+        case 3:{
+            if (Bug::getPosition().getX()+1 == 10){
+                return true;
+            }
+            break;
+        }
+
+        //west
+        case 4:{
+            if (Bug::getPosition().getY()-1 == -1){
+                return true;
+            }
+        }
+
+
+        case 5: //northeast
+            if(Bug::getPosition().getX()-1 == -1 || Bug::getPosition().getY()+1 == 10){
+                return true;
+            }
+            break;
+        case 6: //northwest
+            if(Bug::getPosition().getX()-1 == -1 || Bug::getPosition().getY()-1 == -1){
+                return true;
+            }
+            break;
+        case 7: //southeast
+            if(Bug::getPosition().getX()+1 == 10 || Bug::getPosition().getY()+1 == 10){
+                return true;
+            }
+            break;
+        case 8: //southwest
+            if(Bug::getPosition().getX()+1 == 10 || Bug::getPosition().getY()-1 == -1){
+                return true;
+            }
+            break;
+    }
 
 
 
@@ -61,7 +117,8 @@ void Bug::setAlive(bool alive) {
 
 
 
-bool isWayBlocked(){
+
+    return false;
 
 }
 

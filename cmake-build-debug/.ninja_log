@@ -1,3 +1,9 @@
 # ninja log v5
 3	649	7342894831514588	CMakeFiles/cppCA2.dir/main.cpp.obj	302f489c8a51f6d2
 397	493	7342855668255819	cppCA2.exe	9ebf33455f785db1
+33	919	7345341868662439	CMakeFiles/cppCA2.dir/bugs/Bug.cpp.obj	53367e6013fe2e0b
+39	937	7345341868850937	CMakeFiles/cppCA2.dir/main.cpp.obj	302f489c8a51f6d2
+4	1082	7345341870286634	CMakeFiles/cppCA2.dir/bugs/Crawler.cpp.obj	e41735ba5ea68f1d
+45	1087	7345341870326643	CMakeFiles/cppCA2.dir/bugs/El_Diagonal.cpp.obj	52aee5d7840bae5b
+52	1116	7345341870642370	CMakeFiles/cppCA2.dir/bugs/Hopper.cpp.obj	f693247b83160998
+3	402	7345342602435032	CMakeFiles/cppCA2.dir/bugs/Bug.cpp.obj	53367e6013fe2e0b

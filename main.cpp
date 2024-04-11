@@ -1,4 +1,7 @@
 #include <iostream>
+#include "headers/Bug.h"
+#include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -12,6 +15,30 @@ void runSimulation();
 void exitProgram();
 
 int main() {
+
+//    Therefore, we must declare a vector of pointers to Bug objects [ in main() ], and populate it by
+//    reading data from a text file (“bugs.txt”), instantiating Bug objects dynamically on the Heap, and
+//    adding their addresses to the vector. The owner of these object must also remember to free the
+//    associated memory.
+    vector<Bug*> bug_vector;
+    vector<char> char_vector;
+      ifstream fin("example.txt");
+
+    char c;
+    while (fin >> c) {
+        char_vector.push_back(c);
+    }
+
+    fin.close();
+
+    for (int i = 0; i < char_vector.size(); i++) {
+        cout <<char_vector[i];
+    }
+
+
+
+
+
 
     int choice = -1;
     do{

@@ -41,17 +41,17 @@ protected:
     int id;
 public:
     bool isWayBlocked();
-    virtual void move();
+    virtual void move() =0;
 
     int getId() const;
 
-    const Pair getPosition() const;
+     const Pair getPosition() const;
 
     int getSize() const;
 
     bool getAlive() const;
 
-    int getDirection() const;
+     int getDirection() const;
 
     const list<Pair> &getPath();
 
