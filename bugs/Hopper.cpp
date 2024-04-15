@@ -7,6 +7,15 @@
 #include <random>
 using namespace std;
 
+Hopper::Hopper(int id,int x,int y, int direction, int size, int hopLength){
+    Pair coordinates(x,y);
+    this->size = size;
+    this->alive = true;
+    this->position = coordinates;
+    this->direction = direction;
+    this->id = id;
+    this->hopLength = hopLength;
+}
 
 void Hopper::move() {
     random_device rd;

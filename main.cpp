@@ -14,7 +14,7 @@ void initializeBugBoard();
 
 void displayAllBugs();
 
-void findBugById();
+void findBugById(const vector<Bug *> &bug_vector, int size);
 
 void tapBugBoard();
 
@@ -26,22 +26,32 @@ void runSimulation();
 
 void exitProgram();
 
-void readBugsFromFile(vector<Bug *> bug_vector);
+void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
 
 int main() {
 
-//    Therefore, we must declare a vector of pointers to Bug objects [ in main() ], and populate it by
-//    reading data from a text file (“bugs.txt”), instantiating Bug objects dynamically on the Heap, and
-//    adding their addresses to the vector. The owner of these object must also remember to free the
-//    associated memory.
     vector<Bug *> bug_vector;
-    readBugsFromFile(bug_vector);
+    readBugsFromFile(bug_vector, "bugsFile.txt");
 
+    Crawler *craw = new Crawler(1, 1, 1, 3, 3);
+    bug_vector.push_back(craw);
+
+    Hopper *hopp = new Hopper(2, 2, 2, 4, 4, 6);
+    bug_vector.push_back(hopp);
+
+    El_Diagonal *eldi = new El_Diagonal(3, 3, 3, 5, 7);
+    bug_vector.push_back(eldi);
+//
+    for(int i = 0; i<bug_vector.size();i++){
+        cout<<bug_vector.at(i)->getId()<<endl;
+    }
 
     int choice = -1;
     do {
 
         cout << "Menu Items" << endl;
+
+
         cout << "1. Initialize Bug Board (load data from file)" << endl;
         cout << "2. Display all Bugs" << endl;
         cout << "3. Find a Bug (given an id)" << endl;
@@ -61,7 +71,7 @@ int main() {
                 displayAllBugs();
                 break;
             case 3:
-                findBugById();
+                findBugById(bug_vector, 3);
                 break;
             case 4:
                 tapBugBoard();
@@ -85,11 +95,15 @@ int main() {
     return 0;
 }
 
-void readBugsFromFile(vector<Bug *> bug_vector) {
-    ifstream file("bugs.txt");
-    if (!file.is_open()) {
-        cout << "Failed to open file";
-    } else {
+void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
+        ifstream file(fileName);
+
+        if(!file.is_open()){
+            cout<<"File cant be opened"<<endl;
+        }else{
+
+
+
         while (!file.eof()) {
             string line;
             char delimiter = ';';
@@ -123,8 +137,9 @@ void readBugsFromFile(vector<Bug *> bug_vector) {
                 bug_vector.push_back(eldi);
             }
         }
+        }
+
     }
-}
 
 
         void initializeBugBoard() {
@@ -135,8 +150,31 @@ void readBugsFromFile(vector<Bug *> bug_vector) {
             cout << "Displaying all Bugs..." << endl;
         }
 
-        void findBugById() {
+        void findBugById(const vector<Bug *> &bug_vector, int size) {
             cout << "Finding a Bug by ID..." << endl;
+            cout<<"Enter bug id to find: ";
+            int userID;
+            cin >> userID;
+            bool idFound = false;
+
+            for(int i =0; i<size; i++){
+                int id= bug_vector.at(i)->getId();
+                if(id == userID){
+                    cout<<"id: "<<bug_vector.at(i)->getId()<<endl;
+                    cout<<"direction: "<<bug_vector.at(i)->getDirection()<<endl;
+                    cout<<"X position: "<<bug_vector.at(i)->getPosition().getX()<<endl;
+                    cout<<"Y position: "<<bug_vector.at(i)->getPosition().getY()<<endl;
+                    cout<<"alive: "<<bug_vector.at(i)->getAlive()<<endl;
+                    cout<<"size: "<<bug_vector.at(i)->getSize()<<endl;
+
+                    idFound = true;
+                }
+            }
+
+            if(!idFound){
+                cout<<"Bug not found."<<endl;
+            }
+
         }
 
         void tapBugBoard() {

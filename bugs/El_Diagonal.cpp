@@ -13,6 +13,15 @@
 #include <random>
 using namespace std;
 
+El_Diagonal::El_Diagonal(int id,int x,int y, int direction, int size){
+    Pair coordinates(x,y);
+    this->size = size;
+    this->alive = true;
+    this->position = coordinates;
+    this->direction = direction;
+    this->id = id;
+}
+
 void El_Diagonal::move() {
     random_device rd;
     mt19937 gen(rd());
@@ -60,7 +69,6 @@ void El_Diagonal::move() {
             }
             break;
     }
-
     path.push_back(position);
 }
 

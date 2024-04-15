@@ -7,6 +7,16 @@
 #include <random>
 using namespace std;
 
+Crawler::Crawler(int id,int x,int y, int direction, int size){
+    Pair coordinates(x,y);
+    this->size = size;
+    this->alive = true;
+    this->position = coordinates;
+    this->direction = direction;
+    this->id = id;
+}
+
+
 void Crawler::move() {
     random_device rd;
     mt19937 gen(rd());
