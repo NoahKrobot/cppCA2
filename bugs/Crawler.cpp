@@ -34,7 +34,6 @@ void Crawler::move() {
             if(!isWayBlocked()){
                 updatePositionDependingOnDirection(1);
             }else{
-
                 int numbers[] = {1, 3, 4};
                 uniform_int_distribution<> dist(0, 2);
                 int randomIndex = dist(gen);

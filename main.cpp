@@ -16,7 +16,7 @@ void displayAllBugs(const vector<Bug *> &bug_vector, int size);
 
 void findBugById(const vector<Bug *> &bug_vector, int size);
 
-void tapBugBoard();
+void tapBugBoard(const vector<Bug *> &bug_vector, int size);
 
 void displayLifeHistory();
 
@@ -42,8 +42,8 @@ int main() {
     El_Diagonal *eldi = new El_Diagonal(3, 3, 3, 5, 7);
     bug_vector.push_back(eldi);
 //
-    for(int i = 0; i<bug_vector.size();i++){
-        cout<<bug_vector.at(i)->getId()<<endl;
+    for (int i = 0; i < bug_vector.size(); i++) {
+        cout << bug_vector.at(i)->getId() << endl;
     }
 
     int choice = -1;
@@ -74,7 +74,7 @@ int main() {
                 findBugById(bug_vector, 3);
                 break;
             case 4:
-                tapBugBoard();
+                tapBugBoard(bug_vector, 3);
                 break;
             case 5:
                 displayLifeHistory();
@@ -96,12 +96,11 @@ int main() {
 }
 
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
-        ifstream file(fileName);
+    ifstream file(fileName);
 
-        if(!file.is_open()){
-            cout<<"File cant be opened"<<endl;
-        }else{
-
+    if (!file.is_open()) {
+        cout << "File cant be opened" << endl;
+    } else {
 
 
         while (!file.eof()) {
@@ -137,77 +136,79 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
                 bug_vector.push_back(eldi);
             }
         }
-        }
+    }
+}
 
+void initializeBugBoard() {
+    cout << "Initializing Bug Board..." << endl;
+}
+
+void displayAllBugs(const vector<Bug *> &bug_vector, int size) {
+    cout << "Displaying all Bugs..." << endl;
+
+    for (int i = 0; i < size; i++) {
+        cout << "id: " << bug_vector.at(i)->getId() << endl;
+        cout << "direction: " << bug_vector.at(i)->getDirection() << endl;
+        cout << "X position: " << bug_vector.at(i)->getPosition().getX() << endl;
+        cout << "Y position: " << bug_vector.at(i)->getPosition().getY() << endl;
+        cout << "alive: " << bug_vector.at(i)->getAlive() << endl;
+        cout << "size: " << bug_vector.at(i)->getSize() << endl;
+        cout << endl;
+        cout << endl;
+    }
+}
+
+void findBugById(const vector<Bug *> &bug_vector, int size) {
+    cout << "Finding a Bug by ID..." << endl;
+    cout << "Enter bug id to find: ";
+    int userID;
+    cin >> userID;
+    bool idFound = false;
+    cout << endl;
+
+    for (int i = 0; i < size; i++) {
+        int id = bug_vector.at(i)->getId();
+        if (id == userID) {
+            cout << "id: " << bug_vector.at(i)->getId() << endl;
+            cout << "direction: " << bug_vector.at(i)->getDirection() << endl;
+            cout << "X position: " << bug_vector.at(i)->getPosition().getX() << endl;
+            cout << "Y position: " << bug_vector.at(i)->getPosition().getY() << endl;
+            cout << "alive: " << bug_vector.at(i)->getAlive() << endl;
+            cout << "size: " << bug_vector.at(i)->getSize() << endl;
+            idFound = true;
+        }
     }
 
+    if (!idFound) {
+        cout << "Bug not found." << endl;
+    }
+    cout << endl;
+    cout << endl;
+}
 
-        void initializeBugBoard() {
-            cout << "Initializing Bug Board..." << endl;
-        }
+void tapBugBoard(const vector<Bug *> &bug_vector, int size) {
+    cout<< endl;
+    cout << "Tapping the Bug Board..." << endl;
+    for (int i = 0; i < size; i++) {
+        bug_vector[i]->move();
+        cout<< endl;
+    }
+}
 
-        void displayAllBugs(const vector<Bug *> &bug_vector, int size) {
-            cout << "Displaying all Bugs..." << endl;
+void displayLifeHistory() {
+    cout << "Displaying Life History of all Bugs..." << endl;
+}
 
-            for(int i =0; i<size; i++){
-                    cout<<"id: "<<bug_vector.at(i)->getId()<<endl;
-                    cout<<"direction: "<<bug_vector.at(i)->getDirection()<<endl;
-                    cout<<"X position: "<<bug_vector.at(i)->getPosition().getX()<<endl;
-                    cout<<"Y position: "<<bug_vector.at(i)->getPosition().getY()<<endl;
-                    cout<<"alive: "<<bug_vector.at(i)->getAlive()<<endl;
-                    cout<<"size: "<<bug_vector.at(i)->getSize()<<endl;
-                    cout<<endl;
-                    cout<<endl;
-            }
-        }
+void displayAllCells() {
+    cout << "Displaying all Cells listing their Bugs..." << endl;
+}
 
-        void findBugById(const vector<Bug *> &bug_vector, int size) {
-            cout << "Finding a Bug by ID..." << endl;
-            cout<<"Enter bug id to find: ";
-            int userID;
-            cin >> userID;
-            bool idFound = false;
-            cout<<endl;
+void runSimulation() {
+    cout << "Running simulation..." << endl;
+}
 
-            for(int i =0; i<size; i++){
-                int id= bug_vector.at(i)->getId();
-                if(id == userID){
-                    cout<<"id: "<<bug_vector.at(i)->getId()<<endl;
-                    cout<<"direction: "<<bug_vector.at(i)->getDirection()<<endl;
-                    cout<<"X position: "<<bug_vector.at(i)->getPosition().getX()<<endl;
-                    cout<<"Y position: "<<bug_vector.at(i)->getPosition().getY()<<endl;
-                    cout<<"alive: "<<bug_vector.at(i)->getAlive()<<endl;
-                    cout<<"size: "<<bug_vector.at(i)->getSize()<<endl;
-
-                    idFound = true;
-                }
-            }
-
-            if(!idFound){
-                cout<<"Bug not found."<<endl;
-            }
-            cout<<endl;
-            cout<<endl;
-        }
-
-        void tapBugBoard() {
-            cout << "Tapping the Bug Board..." << endl;
-        }
-
-        void displayLifeHistory() {
-            cout << "Displaying Life History of all Bugs..." << endl;
-        }
-
-        void displayAllCells() {
-            cout << "Displaying all Cells listing their Bugs..." << endl;
-        }
-
-        void runSimulation() {
-            cout << "Running simulation..." << endl;
-        }
-
-        void exitProgram() {
-            cout << "Exiting program..." << endl;
-        }
+void exitProgram() {
+    cout << "Exiting program..." << endl;
+}
 
 
