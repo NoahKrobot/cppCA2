@@ -12,7 +12,7 @@ using namespace std;
 
 void initializeBugBoard();
 
-void displayAllBugs();
+void displayAllBugs(const vector<Bug *> &bug_vector, int size);
 
 void findBugById(const vector<Bug *> &bug_vector, int size);
 
@@ -68,7 +68,7 @@ int main() {
                 initializeBugBoard();
                 break;
             case 2:
-                displayAllBugs();
+                displayAllBugs(bug_vector, 3);
                 break;
             case 3:
                 findBugById(bug_vector, 3);
@@ -146,8 +146,19 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
             cout << "Initializing Bug Board..." << endl;
         }
 
-        void displayAllBugs() {
+        void displayAllBugs(const vector<Bug *> &bug_vector, int size) {
             cout << "Displaying all Bugs..." << endl;
+
+            for(int i =0; i<size; i++){
+                    cout<<"id: "<<bug_vector.at(i)->getId()<<endl;
+                    cout<<"direction: "<<bug_vector.at(i)->getDirection()<<endl;
+                    cout<<"X position: "<<bug_vector.at(i)->getPosition().getX()<<endl;
+                    cout<<"Y position: "<<bug_vector.at(i)->getPosition().getY()<<endl;
+                    cout<<"alive: "<<bug_vector.at(i)->getAlive()<<endl;
+                    cout<<"size: "<<bug_vector.at(i)->getSize()<<endl;
+                    cout<<endl;
+                    cout<<endl;
+            }
         }
 
         void findBugById(const vector<Bug *> &bug_vector, int size) {
@@ -156,6 +167,7 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
             int userID;
             cin >> userID;
             bool idFound = false;
+            cout<<endl;
 
             for(int i =0; i<size; i++){
                 int id= bug_vector.at(i)->getId();
@@ -174,7 +186,8 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
             if(!idFound){
                 cout<<"Bug not found."<<endl;
             }
-
+            cout<<endl;
+            cout<<endl;
         }
 
         void tapBugBoard() {
