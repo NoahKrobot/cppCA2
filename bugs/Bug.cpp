@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../headers/Bug.h"
-
+#include <random>
 // getters
 int Bug::getId() const {
     return id;

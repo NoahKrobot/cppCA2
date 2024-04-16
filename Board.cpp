@@ -7,7 +7,7 @@
 #include <fstream>
 #include "headers/Board.h"
 #include "headers/Bug.h"
-
+#include <random>
 
 void Board::displayAllBugs(const vector<Bug *> &bug_vector, int size) {
     cout << "Displaying all Bugs..." << endl;
@@ -56,8 +56,40 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
     cout<< endl;
     cout << "Tapping the Bug Board..." << endl;
     for (int i = 0; i < size; i++) {
-        bug_vector[i]->move();
+        bug_vector.at(i)->move();
         cout<< endl;
+    }
+
+    for(int j=0;j<size;j++){
+        int x = bug_vector.at(j)->getPosition().getX();
+        int y = bug_vector.at(j)->getPosition().getY();
+        int id = bug_vector.at(j)->getId();
+        int bugSize = bug_vector.at(j)->getSize();
+        for(int k=0;k<size;k++){
+            int x2 = bug_vector.at(k)->getPosition().getX();
+            int y2 = bug_vector.at(k)->getPosition().getY();
+            int id2 = bug_vector.at(k)->getId();
+            int bugSize2 = bug_vector.at(k)->getSize();
+            if(id2!=id){
+                if(x == x2 && y ==y2){
+                    if(bugSize==bugSize2){
+                        random_device rd;
+                        mt19937 gen(rd());
+                        uniform_int_distribution<> dist(1, 2);
+                        int randomInt = dist(gen);
+                        if(randomInt ==1){
+                            bug_vector.at(j)->setAlive(false);
+                        }else{
+                            bug_vector.at(k)->setAlive(false);
+                        }
+                    }else if(bugSize<bugSize2){
+                        bug_vector.at(j)->setAlive(false);
+                    }else{
+                        bug_vector.at(k)->setAlive(false);
+                    }
+                }
+            }
+        }
     }
 }
 
