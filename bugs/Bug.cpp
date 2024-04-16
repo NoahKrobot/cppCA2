@@ -30,6 +30,10 @@ int Bug::getDirection() const{
     return direction;
 }
 
+char Bug::getType() const{
+    return type;
+}
+
 const list<Pair> & Bug::getPath()  {
     return path;
 }

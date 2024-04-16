@@ -13,7 +13,7 @@
 #include <random>
 using namespace std;
 
-El_Diagonal::El_Diagonal(int id,int x,int y, int direction, int size){
+El_Diagonal::El_Diagonal(char type, int id,int x,int y, int direction, int size){
     Pair coordinates(x,y);
     this->size = size;
     this->alive = true;

@@ -34,6 +34,7 @@ struct Pair {
 class Bug {
 protected:
     Pair position = Pair(0,0);
+    char type;
     int size;
     bool alive;
     int direction;
@@ -48,6 +49,8 @@ public:
      const Pair getPosition() const;
 
     int getSize() const;
+
+    char getType() const;
 
     bool getAlive() const;
 

@@ -7,8 +7,9 @@
 #include <random>
 using namespace std;
 
-Hopper::Hopper(int id,int x,int y, int direction, int size, int hopLength){
+Hopper::Hopper(char type, int id,int x,int y, int direction, int size, int hopLength){
     Pair coordinates(x,y);
+    this->type = type;
     this->size = size;
     this->alive = true;
     this->position = coordinates;

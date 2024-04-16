@@ -29,13 +29,13 @@ int main() {
     vector<Bug *> bug_vector;
     readBugsFromFile(bug_vector, "bugsFile.txt");
 
-    Crawler *craw = new Crawler(1, 1, 1, 3, 3);
+    Crawler *craw = new Crawler('C', 1, 1, 1, 3, 3);
     bug_vector.push_back(craw);
 
-    Hopper *hopp = new Hopper(2, 2, 2, 4, 4, 6);
+    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
     bug_vector.push_back(hopp);
 
-    El_Diagonal *eldi = new El_Diagonal(3, 3, 3, 5, 7);
+    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
     bug_vector.push_back(eldi);
 //
     for (int i = 0; i < bug_vector.size(); i++) {
@@ -121,14 +121,14 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
 
             //bug_vector.push_back(New Crawler (...))
             if (bugsString.at(0) == "C") {
-                Crawler *craw = new Crawler(id, xValue, yValue, direction, size);
+                Crawler *craw = new Crawler('C', id, xValue, yValue, direction, size);
                 bug_vector.push_back(craw);
             } else if (bugsString.at(0) == "H") {
                 int hopLength = stoi(bugsString.at(6));
-                Hopper *hopp = new Hopper(id, xValue, yValue, direction, size, hopLength);
+                Hopper *hopp = new Hopper('H', id, xValue, yValue, direction, size, hopLength);
                 bug_vector.push_back(hopp);
             } else if (bugsString.at(0) == "E") {
-                El_Diagonal *eldi = new El_Diagonal(id, xValue, yValue, direction, size);
+                El_Diagonal *eldi = new El_Diagonal('E', id, xValue, yValue, direction, size);
                 bug_vector.push_back(eldi);
             }
         }

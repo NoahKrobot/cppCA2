@@ -60,12 +60,36 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
     }
 }
 
+
+
+
+//Tutorial: auto iterator
+        //https://stackoverflow.com/questions/3434256/use-the-auto-keyword-in-c-stl
+
 void Board::displayLifeHistory(const vector<Bug *> &bug_vector, int size) {
     list<int>::iterator it;
+
     for(int i = 0; i<size;i++){
-            cout<<"Bug "<<i<<": "<<endl;
+        string bugStringLine ="";
+
+        bugStringLine+= to_string(bug_vector.at(i)->getId());
+
+        if(bug_vector.at(i)->getType() == 'C'){
+            bugStringLine+= " Crawler Path:";
+        }else if(bug_vector.at(i)->getType() == 'H'){
+            bugStringLine+= " Hopper Path:";
+        }else{
+            bugStringLine+= " El Diagonal Path:";
+        }
+
             for (auto it = bug_vector.at(i)->getPath().begin(); it != bug_vector.at(i)->getPath().end(); it++) {
-               cout << "X: " << it->getX() << ", Y: " << it->getY() << endl;
+                bugStringLine+= "(";
+                bugStringLine+= to_string(it->getX());
+                bugStringLine+= ",";
+                bugStringLine+= to_string(it->getY());
+                bugStringLine+= "), ";
             }
+
+            cout<<bugStringLine<<endl;
     }
 }
