@@ -59,3 +59,13 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
         cout<< endl;
     }
 }
+
+void Board::displayLifeHistory(const vector<Bug *> &bug_vector, int size) {
+    list<int>::iterator it;
+    for(int i = 0; i<size;i++){
+            cout<<"Bug "<<i<<": "<<endl;
+            for (auto it = bug_vector.at(i)->getPath().begin(); it != bug_vector.at(i)->getPath().end(); it++) {
+               cout << "X: " << it->getX() << ", Y: " << it->getY() << endl;
+            }
+    }
+}

@@ -14,6 +14,7 @@ public:
     void displayAllBugs(const vector<Bug *> &bug_vector, int size);
     void findBugById(const vector<Bug *> &bug_vector, int size);
     void tapBugBoard(const vector<Bug *> &bug_vector, int size);
+    void displayLifeHistory(const vector<Bug *> &bug_vector, int size);
 };
 
 

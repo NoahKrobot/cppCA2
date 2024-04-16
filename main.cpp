@@ -73,7 +73,7 @@ int main() {
                 (new Board())->tapBugBoard(bug_vector, 3);
                 break;
             case 5:
-                (new  Board())->displayAllBugs(bug_vector, 3);
+                (new  Board())->displayLifeHistory(bug_vector, 3);
                 break;
             case 6:
                 displayAllCells();
