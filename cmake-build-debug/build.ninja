@@ -79,6 +79,12 @@ build CMakeFiles/cppCA2.dir/bugs/El_Diagonal.cpp.obj: CXX_COMPILER__cppCA2_unsca
   OBJECT_DIR = CMakeFiles\cppCA2.dir
   OBJECT_FILE_DIR = CMakeFiles\cppCA2.dir\bugs
 
+build CMakeFiles/cppCA2.dir/Board.cpp.obj: CXX_COMPILER__cppCA2_unscanned_Debug C$:/Users/noah3/OneDrive/CAs/cppCA2/Board.cpp || cmake_object_order_depends_target_cppCA2
+  DEP_FILE = CMakeFiles\cppCA2.dir\Board.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\cppCA2.dir
+  OBJECT_FILE_DIR = CMakeFiles\cppCA2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target cppCA2
@@ -87,7 +93,7 @@ build CMakeFiles/cppCA2.dir/bugs/El_Diagonal.cpp.obj: CXX_COMPILER__cppCA2_unsca
 #############################################
 # Link the executable cppCA2.exe
 
-build cppCA2.exe: CXX_EXECUTABLE_LINKER__cppCA2_Debug CMakeFiles/cppCA2.dir/main.cpp.obj CMakeFiles/cppCA2.dir/bugs/Bug.cpp.obj CMakeFiles/cppCA2.dir/bugs/Crawler.cpp.obj CMakeFiles/cppCA2.dir/bugs/Hopper.cpp.obj CMakeFiles/cppCA2.dir/bugs/El_Diagonal.cpp.obj
+build cppCA2.exe: CXX_EXECUTABLE_LINKER__cppCA2_Debug CMakeFiles/cppCA2.dir/main.cpp.obj CMakeFiles/cppCA2.dir/bugs/Bug.cpp.obj CMakeFiles/cppCA2.dir/bugs/Crawler.cpp.obj CMakeFiles/cppCA2.dir/bugs/Hopper.cpp.obj CMakeFiles/cppCA2.dir/bugs/El_Diagonal.cpp.obj CMakeFiles/cppCA2.dir/Board.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\cppCA2.dir

@@ -11,4 +11,6 @@ add_executable(cppCA2 main.cpp
         headers/Hopper.h
         bugs/Hopper.cpp
         headers/El_Diagonal.h
-        bugs/El_Diagonal.cpp)
+        bugs/El_Diagonal.cpp
+        headers/Board.h
+        Board.cpp)
