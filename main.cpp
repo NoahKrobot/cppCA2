@@ -82,7 +82,7 @@ int main() {
                 runSimulation();
                 break;
             case 8:
-                exitProgram();
+                (new  Board())->exitProgram(bug_vector, 3);
                 break;
             default:
                 cout << "Invalid choice. Please enter a number between 1 and 8." << endl;
