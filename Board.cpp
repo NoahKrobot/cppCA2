@@ -104,8 +104,6 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
                                 int eatenSize1 = bug_vector.at(k)->getSize();
                                 bug_vector.at(j)->setSize(aliveSize1+eatenSize1);
                             }
-
-
                         } else if (bugSize < bugSize2) {
                             bug_vector.at(j)->setAlive(false);
                             int eatenSize2 = bug_vector.at(j)->getSize();
@@ -121,14 +119,9 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
                 }
             }
         }
-
         Sleep(1000);
-
     }
 }
-
-
-
 
 //Tutorial: auto iterator
 //https://stackoverflow.com/questions/3434256/use-the-auto-keyword-in-c-stl
