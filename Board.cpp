@@ -8,6 +8,7 @@
 #include "headers/Board.h"
 #include "headers/Bug.h"
 #include <random>
+#include <synchapi.h>
 
 void Board::displayAllBugs(const vector<Bug *> &bug_vector, int size) {
     cout << "Displaying all Bugs..." << endl;
@@ -52,44 +53,77 @@ void Board::findBugById(const vector<Bug *> &bug_vector, int size) {
     cout << endl;
 }
 
-void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
-    cout<< endl;
-    cout << "Tapping the Bug Board..." << endl;
-    for (int i = 0; i < size; i++) {
-        bug_vector.at(i)->move();
-        cout<< endl;
-    }
 
-    for(int j=0;j<size;j++){
-        int x = bug_vector.at(j)->getPosition().getX();
-        int y = bug_vector.at(j)->getPosition().getY();
-        int id = bug_vector.at(j)->getId();
-        int bugSize = bug_vector.at(j)->getSize();
-        for(int k=0;k<size;k++){
-            int x2 = bug_vector.at(k)->getPosition().getX();
-            int y2 = bug_vector.at(k)->getPosition().getY();
-            int id2 = bug_vector.at(k)->getId();
-            int bugSize2 = bug_vector.at(k)->getSize();
-            if(id2!=id){
-                if(x == x2 && y ==y2){
-                    if(bugSize==bugSize2){
-                        random_device rd;
-                        mt19937 gen(rd());
-                        uniform_int_distribution<> dist(1, 2);
-                        int randomInt = dist(gen);
-                        if(randomInt ==1){
+//Tutorial sleep: https://stackoverflow.com/questions/10807681/loop-every-10-second
+void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
+    //check if there's more than 1 bug alive:
+    int aliveCount = 100;
+    while (aliveCount > 1) {
+        aliveCount=0;
+        for (int bugAliveCount = 0; bugAliveCount < size; bugAliveCount++) {
+            if(bug_vector.at(bugAliveCount)->getAlive()){
+                aliveCount++;
+            }
+
+        }
+
+        //move bugs
+        cout << endl;
+        cout << "Tapping the Bug Board..." << endl;
+        for (int i = 0; i < size; i++) {
+            bug_vector.at(i)->move();
+            cout << endl;
+        }
+
+        //eat
+        for (int j = 0; j < size; j++) {
+            int x = bug_vector.at(j)->getPosition().getX();
+            int y = bug_vector.at(j)->getPosition().getY();
+            int id = bug_vector.at(j)->getId();
+            int bugSize = bug_vector.at(j)->getSize();
+            for (int k = 0; k < size; k++) {
+                int x2 = bug_vector.at(k)->getPosition().getX();
+                int y2 = bug_vector.at(k)->getPosition().getY();
+                int id2 = bug_vector.at(k)->getId();
+                int bugSize2 = bug_vector.at(k)->getSize();
+                if (id2 != id) {
+                    if (x == x2 && y == y2) {
+                        if (bugSize == bugSize2) {
+                            random_device rd;
+                            mt19937 gen(rd());
+                            uniform_int_distribution<> dist(1, 2);
+                            int randomInt = dist(gen);
+                            if (randomInt == 1) {
+                                bug_vector.at(j)->setAlive(false);
+                                int eatenSize = bug_vector.at(j)->getSize();
+                                int aliveSize = bug_vector.at(k)->getSize();
+                                bug_vector.at(k)->setSize(aliveSize+eatenSize);
+                            } else {
+                                bug_vector.at(k)->setAlive(false);
+                                int aliveSize1 = bug_vector.at(j)->getSize();
+                                int eatenSize1 = bug_vector.at(k)->getSize();
+                                bug_vector.at(j)->setSize(aliveSize1+eatenSize1);
+                            }
+
+
+                        } else if (bugSize < bugSize2) {
                             bug_vector.at(j)->setAlive(false);
-                        }else{
+                            int eatenSize2 = bug_vector.at(j)->getSize();
+                            int aliveSize2 = bug_vector.at(k)->getSize();
+                            bug_vector.at(k)->setSize(aliveSize2+eatenSize2);
+                        } else {
                             bug_vector.at(k)->setAlive(false);
+                            int aliveSize3 = bug_vector.at(j)->getSize();
+                            int eatenSize3 = bug_vector.at(k)->getSize();
+                            bug_vector.at(j)->setSize(aliveSize3+eatenSize3);
                         }
-                    }else if(bugSize<bugSize2){
-                        bug_vector.at(j)->setAlive(false);
-                    }else{
-                        bug_vector.at(k)->setAlive(false);
                     }
                 }
             }
         }
+
+        Sleep(1000);
+
     }
 }
 
@@ -97,10 +131,10 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
 
 
 //Tutorial: auto iterator
-        //https://stackoverflow.com/questions/3434256/use-the-auto-keyword-in-c-stl
+//https://stackoverflow.com/questions/3434256/use-the-auto-keyword-in-c-stl
 
 void Board::displayLifeHistory(const vector<Bug *> &bug_vector, int size) {
-    cout<<historyMainFunction(bug_vector, size)<<endl;
+    cout << historyMainFunction(bug_vector, size) << endl;
 }
 
 
@@ -110,17 +144,17 @@ void Board::exitProgram(const vector<Bug *> &bug_vector, int size) {
     time_t now = time(0);
     tm *ltm = localtime(&now);
     string filename = "../bugs_life_history_" + to_string(ltm->tm_mday)
-                                                +"-"
-                                                + to_string(1 + ltm->tm_mon)
-                                                  +"-"
-                                                  + to_string(1900 + ltm->tm_year)
-                                                    +"-"
-                                                    + to_string(ltm->tm_hour)
-                                                      +"-"
-                                                      + to_string(ltm->tm_min)
-                                                        +"-"
-                                                        + to_string(ltm->tm_sec)
-            + ".txt";
+                      + "-"
+                      + to_string(1 + ltm->tm_mon)
+                      + "-"
+                      + to_string(1900 + ltm->tm_year)
+                      + "-"
+                      + to_string(ltm->tm_hour)
+                      + "-"
+                      + to_string(ltm->tm_min)
+                      + "-"
+                      + to_string(ltm->tm_sec)
+                      + ".txt";
     ofstream outFile(filename);
     if (outFile.is_open()) {
         outFile << toPasteInFile;
@@ -135,28 +169,28 @@ void Board::exitProgram(const vector<Bug *> &bug_vector, int size) {
 
 }
 
-string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size){
+string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size) {
     list<int>::iterator it;
     string bugStringLine;
-    for(int i = 0; i<size;i++){
-        bugStringLine+= "\n";
+    for (int i = 0; i < size; i++) {
+        bugStringLine += "\n";
 
-        bugStringLine+= to_string(bug_vector.at(i)->getId());
+        bugStringLine += to_string(bug_vector.at(i)->getId());
 
-        if(bug_vector.at(i)->getType() == 'C'){
-            bugStringLine+= " Crawler Path:";
-        }else if(bug_vector.at(i)->getType() == 'H'){
-            bugStringLine+= " Hopper Path:";
-        }else{
-            bugStringLine+= " El Diagonal Path:";
+        if (bug_vector.at(i)->getType() == 'C') {
+            bugStringLine += " Crawler Path:";
+        } else if (bug_vector.at(i)->getType() == 'H') {
+            bugStringLine += " Hopper Path:";
+        } else {
+            bugStringLine += " El Diagonal Path:";
         }
 
         for (auto it = bug_vector.at(i)->getPath().begin(); it != bug_vector.at(i)->getPath().end(); it++) {
-            bugStringLine+= "(";
-            bugStringLine+= to_string(it->getX());
-            bugStringLine+= ",";
-            bugStringLine+= to_string(it->getY());
-            bugStringLine+= "), ";
+            bugStringLine += "(";
+            bugStringLine += to_string(it->getX());
+            bugStringLine += ",";
+            bugStringLine += to_string(it->getY());
+            bugStringLine += "), ";
         }
 
     }
