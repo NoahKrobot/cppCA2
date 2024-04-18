@@ -3,28 +3,23 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-
 #include "headers/Crawler.h"
 #include "headers/Hopper.h"
 #include "headers/El_Diagonal.h"
 #include "headers/Board.h"
 
+
 using namespace std;
 
 void initializeBugBoard();
-
-
 void displayLifeHistory();
-
 void displayAllCells();
-
 void runSimulation();
-
 void exitProgram();
-
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
 
 int main() {
+
 
     vector<Bug *> bug_vector;
     readBugsFromFile(bug_vector, "bugsFile.txt");

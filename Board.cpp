@@ -56,6 +56,9 @@ void Board::findBugById(const vector<Bug *> &bug_vector, int size) {
 
 //Tutorial sleep: https://stackoverflow.com/questions/10807681/loop-every-10-second
 void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
+
+    vector<Bug *> bug_vectorEat;
+    vector<Bug *> bug_vectorBigEquals;
     //check if there's more than 1 bug alive:
     int aliveCount = 100;
     while (aliveCount > 1) {
@@ -77,10 +80,15 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
 
         //eat
         for (int j = 0; j < size; j++) {
+            bug_vectorEat.clear();
+
             int x = bug_vector.at(j)->getPosition().getX();
             int y = bug_vector.at(j)->getPosition().getY();
             int id = bug_vector.at(j)->getId();
-            int bugSize = bug_vector.at(j)->getSize();
+
+            bug_vectorEat.push_back(bug_vector.at(j));
+
+
             for (int k = 0; k < size; k++) {
                 int x2 = bug_vector.at(k)->getPosition().getX();
                 int y2 = bug_vector.at(k)->getPosition().getY();
@@ -88,36 +96,52 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
                 int bugSize2 = bug_vector.at(k)->getSize();
                 if (id2 != id) {
                     if (x == x2 && y == y2) {
-                        if (bugSize == bugSize2) {
-                            random_device rd;
-                            mt19937 gen(rd());
-                            uniform_int_distribution<> dist(1, 2);
-                            int randomInt = dist(gen);
-                            if (randomInt == 1) {
-                                bug_vector.at(j)->setAlive(false);
-                                int eatenSize = bug_vector.at(j)->getSize();
-                                int aliveSize = bug_vector.at(k)->getSize();
-                                bug_vector.at(k)->setSize(aliveSize+eatenSize);
-                            } else {
-                                bug_vector.at(k)->setAlive(false);
-                                int aliveSize1 = bug_vector.at(j)->getSize();
-                                int eatenSize1 = bug_vector.at(k)->getSize();
-                                bug_vector.at(j)->setSize(aliveSize1+eatenSize1);
-                            }
-                        } else if (bugSize < bugSize2) {
-                            bug_vector.at(j)->setAlive(false);
-                            int eatenSize2 = bug_vector.at(j)->getSize();
-                            int aliveSize2 = bug_vector.at(k)->getSize();
-                            bug_vector.at(k)->setSize(aliveSize2+eatenSize2);
-                        } else {
-                            bug_vector.at(k)->setAlive(false);
-                            int aliveSize3 = bug_vector.at(j)->getSize();
-                            int eatenSize3 = bug_vector.at(k)->getSize();
-                            bug_vector.at(j)->setSize(aliveSize3+eatenSize3);
-                        }
+                        bug_vectorEat.push_back(bug_vector.at(k));
                     }
                 }
             }
+            int maxBugSize =0;
+            int finalSizeForBigBug = 0;
+            //find the biggest one
+            for(int i = 0; i< bug_vectorEat.size();i++){
+                maxBugSize = bug_vectorEat.at(i)->getSize();
+                for(int j=0;j<bug_vectorEat.size();j++){
+                    if(maxBugSize < bug_vectorEat.at(j)->getSize()){
+                        maxBugSize= bug_vectorEat.at(j)->getSize();
+                    }
+                }
+            }
+
+            //unalive every bug that sized less than max,
+                //but add the others to another vector
+
+            for(int k=0;k<bug_vectorEat.size();k++){
+                if(bug_vectorEat.at(k)->getSize()<maxBugSize){
+                    finalSizeForBigBug = finalSizeForBigBug+ bug_vectorEat.at(k)->getSize();
+                    bug_vectorEat.at(k)->setAlive(false);
+                } if(bug_vectorEat.at(k)->getSize() == maxBugSize){
+                    bug_vectorBigEquals.push_back(bug_vectorEat.at(k));
+                }
+            }
+
+            for(int q=0; q<bug_vectorBigEquals.size();q++){
+
+            }
+
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<> dist(0, bug_vectorBigEquals.size());
+            int randomInt = dist(gen);
+
+            for(int randoms=0; randoms<bug_vectorBigEquals.size();randoms++){
+                if(randomInt != randoms){
+                    bug_vectorBigEquals.at(randoms)->setAlive(false);
+                    finalSizeForBigBug = finalSizeForBigBug+ bug_vectorBigEquals.at(randoms)->getSize();
+                }else{
+                    bug_vectorBigEquals.at(randoms)->setSize(bug_vectorBigEquals.at(randoms)->getSize() +  finalSizeForBigBug);
+                }
+            }
+            //add method to check every id as well
         }
         Sleep(1000);
     }
@@ -129,7 +153,6 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
 void Board::displayLifeHistory(const vector<Bug *> &bug_vector, int size) {
     cout << historyMainFunction(bug_vector, size) << endl;
 }
-
 
 //Tutorial: getting date and time: https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
 void Board::exitProgram(const vector<Bug *> &bug_vector, int size) {
@@ -159,7 +182,6 @@ void Board::exitProgram(const vector<Bug *> &bug_vector, int size) {
 //    else {
 //       cout<<"error creating history file"<<endl;
 //    }
-
 }
 
 string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size) {
