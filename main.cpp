@@ -8,6 +8,7 @@
 #include "headers/El_Diagonal.h"
 #include "headers/Board.h"
 
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
@@ -21,69 +22,93 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
 int main() {
 
 
-    vector<Bug *> bug_vector;
-    readBugsFromFile(bug_vector, "bugsFile.txt");
+    sf::RenderWindow window(sf::VideoMode(640, 480), "SFML Application");
+    sf::CircleShape shape;
+    shape.setRadius(40.f);
+    shape.setPosition(100.f, 100.f);
+    shape.setFillColor(sf::Color::Cyan);
 
-    Crawler *craw = new Crawler('C', 1, 1, 1, 3, 3);
-    bug_vector.push_back(craw);
+    while (window.isOpen())
+    {
+        sf::Event event;
 
-    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
-    bug_vector.push_back(hopp);
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
 
-    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
-    bug_vector.push_back(eldi);
-//
-    for (int i = 0; i < bug_vector.size(); i++) {
-        cout << bug_vector.at(i)->getId() << endl;
+        window.clear();
+        window.draw(shape);
+        window.display();
     }
 
-    int choice = -1;
-    do {
-
-        cout << "Menu Items" << endl;
 
 
-        cout << "1. Initialize Bug Board (load data from file)" << endl;
-        cout << "2. Display all Bugs" << endl;
-        cout << "3. Find a Bug (given an id)" << endl;
-        cout << "4. Tap the Bug Board (causes move all, then fight/eat)" << endl;
-        cout << "5. Display Life History of all Bugs (path taken)" << endl;
-        cout << "6. Display all Cells listing their Bugs" << endl;
-        cout << "7. Run simulation (generates a Tap every second)" << endl;
-        cout << "8. Exit (write Life History of all Bugs to file)" << endl;
-        cout << "Enter your choice: ";
-        cin >> choice;
-
-        switch (choice) {
-            case 1:
-                initializeBugBoard();
-                break;
-            case 2:
-               (new Board())->displayAllBugs(bug_vector, 3);
-                break;
-            case 3:
-                (new Board())->findBugById(bug_vector, 3);
-                break;
-            case 4:
-                (new Board())->tapBugBoard(bug_vector, 3);
-                break;
-            case 5:
-                (new  Board())->displayLifeHistory(bug_vector, 3);
-                break;
-            case 6:
-                displayAllCells();
-                break;
-            case 7:
-                runSimulation();
-                break;
-            case 8:
-                (new  Board())->exitProgram(bug_vector, 3);
-                break;
-            default:
-                cout << "Invalid choice. Please enter a number between 1 and 8." << endl;
-        }
-    } while (choice != 8);
-    return 0;
+//
+//    vector<Bug *> bug_vector;
+//    readBugsFromFile(bug_vector, "bugsFile.txt");
+//
+//    Crawler *craw = new Crawler('C', 1, 1, 1, 3, 3);
+//    bug_vector.push_back(craw);
+//
+//    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
+//    bug_vector.push_back(hopp);
+//
+//    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
+//    bug_vector.push_back(eldi);
+////
+//    for (int i = 0; i < bug_vector.size(); i++) {
+//        cout << bug_vector.at(i)->getId() << endl;
+//    }
+//
+//    int choice = -1;
+//    do {
+//
+//        cout << "Menu Items" << endl;
+//
+//
+//        cout << "1. Initialize Bug Board (load data from file)" << endl;
+//        cout << "2. Display all Bugs" << endl;
+//        cout << "3. Find a Bug (given an id)" << endl;
+//        cout << "4. Tap the Bug Board (causes move all, then fight/eat)" << endl;
+//        cout << "5. Display Life History of all Bugs (path taken)" << endl;
+//        cout << "6. Display all Cells listing their Bugs" << endl;
+//        cout << "7. Run simulation (generates a Tap every second)" << endl;
+//        cout << "8. Exit (write Life History of all Bugs to file)" << endl;
+//        cout << "Enter your choice: ";
+//        cin >> choice;
+//
+//        switch (choice) {
+//            case 1:
+//                initializeBugBoard();
+//                break;
+//            case 2:
+//               (new Board())->displayAllBugs(bug_vector, 3);
+//                break;
+//            case 3:
+//                (new Board())->findBugById(bug_vector, 3);
+//                break;
+//            case 4:
+//                (new Board())->tapBugBoard(bug_vector, 3);
+//                break;
+//            case 5:
+//                (new  Board())->displayLifeHistory(bug_vector, 3);
+//                break;
+//            case 6:
+//                displayAllCells();
+//                break;
+//            case 7:
+//                runSimulation();
+//                break;
+//            case 8:
+//                (new  Board())->exitProgram(bug_vector, 3);
+//                break;
+//            default:
+//                cout << "Invalid choice. Please enter a number between 1 and 8." << endl;
+//        }
+//    } while (choice != 8);
+//    return 0;
 }
 
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {

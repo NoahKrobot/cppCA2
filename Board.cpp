@@ -10,6 +10,8 @@
 #include <random>
 #include <synchapi.h>
 
+
+
 void Board::displayAllBugs(const vector<Bug *> &bug_vector, int size) {
     cout << "Displaying all Bugs..." << endl;
 
