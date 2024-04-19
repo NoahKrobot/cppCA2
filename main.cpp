@@ -40,12 +40,16 @@ struct Tile {
 
     int x;
     int y;
-    bool populated;
+    int populated;
+    //0 - empty
+    //1 - crawler
+    //2 - hopper
+    //3 - el diagonal
 
-    Tile(int inputX, int inputY, bool inputPopulated) {
+    Tile(int inputX, int inputY, int populationType) {
         x = inputX;
         y = inputY;
-        populated = inputPopulated;
+        populated = populationType;
     }
 
 };
@@ -56,6 +60,54 @@ int main() {
 
 
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
+
+
+    //bug vector
+
+    vector<Bug *> bug_vector;
+
+    Crawler *craw = new Crawler('C', 1, 1, 1, 3, 3);
+    bug_vector.push_back(craw);
+
+    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
+    bug_vector.push_back(hopp);
+    Hopper *hopp2 = new Hopper('H', 2, 5, 2, 4, 4, 6);
+    bug_vector.push_back(hopp2);
+
+    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
+    bug_vector.push_back(eldi);
+
+    //tiles vector
+    vector<Tile> tiles;
+    int typeOfPupulationNumber = 0;
+    char typeOfBugCheck = ' ';
+
+    for (int x = 1; x <= 9; ++x) {
+        for (int y = 1; y <= 9; ++y) {
+            typeOfPupulationNumber=0;
+
+            for(int w=0;w<bug_vector.size();w++){
+
+                if(bug_vector.at(w)->getPosition().getX() == x
+                && bug_vector.at(w)->getPosition().getX() == y
+                ){
+                    typeOfBugCheck = bug_vector.at(w)->getType();
+                    if(typeOfBugCheck == 'C'){
+                        typeOfPupulationNumber = 1;
+                    }else if(typeOfBugCheck == 'H'){
+                        typeOfPupulationNumber = 2;
+                    }else{
+                        typeOfPupulationNumber = 3;
+                    }
+                }
+            }
+            Tile newTile(x, y, typeOfPupulationNumber);
+            tiles.push_back(newTile);
+        }
+    }
+
+
+
 
 
 
@@ -90,14 +142,27 @@ int main() {
     while (window.isOpen())
     {
 
-        vector<Tile> tiles;
 
-        for (int x = 1; x <= 9; ++x) {
-            for (int y = 1; y <= 9; ++y) {
-                Tile newTile(x, y, false);
-                tiles.push_back(newTile);
-            }
-        }
+
+        //Tiles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         sf::Event event;
 
@@ -146,37 +211,19 @@ int main() {
                 sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
                 sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
                 singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding), tiles.at(tileLoop).getY() * (tileSize + padding));
+                if(tiles.at(tileLoop).getPopulated()==0){
+                    singleTileShape.setFillColor(sf::Color::White);
+                }else  if(tiles.at(tileLoop).getPopulated()==1){
+                    singleTileShape.setFillColor(sf::Color::Red);
+                }else  if(tiles.at(tileLoop).getPopulated()==2){
+                    singleTileShape.setFillColor(sf::Color::Blue);
+                }else  if(tiles.at(tileLoop).getPopulated()==3){
+                    singleTileShape.setFillColor(sf::Color::Cyan);
+                }
                 window.draw(singleTileShape);
             }
         }
         window.display();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    vector<Bug *> bug_vector;
-    readBugsFromFile(bug_vector, "bugsFile.txt");
-
-    Crawler *craw = new Crawler('C', 1, 1, 1, 3, 3);
-    bug_vector.push_back(craw);
-
-    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
-    bug_vector.push_back(hopp);
-
-    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
-    bug_vector.push_back(eldi);
-//
-    for (int i = 0; i < bug_vector.size(); i++) {
-        cout << bug_vector.at(i)->getId() << endl;
     }
 
     int choice = -1;
