@@ -12,7 +12,6 @@
 
 
 
-
 void Board::displayAllBugs(const vector<Bug *> &bug_vector, int size) {
     cout << "Displaying all Bugs..." << endl;
 
@@ -63,19 +62,11 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
     vector<Bug *> bug_vectorEat;
     vector<Bug *> bug_vectorBigEquals;
     //check if there's more than 1 bug alive:
-    int aliveCount = 100;
-    while (aliveCount > 1) {
-        aliveCount=0;
-        for (int bugAliveCount = 0; bugAliveCount < size; bugAliveCount++) {
-            if(bug_vector.at(bugAliveCount)->getAlive()){
-                aliveCount++;
-            }
 
-        }
+
 
         //move bugs
-        cout << endl;
-        cout << "Tapping the Bug Board..." << endl;
+
         for (int i = 0; i < size; i++) {
             bug_vector.at(i)->move();
             cout << endl;
@@ -146,9 +137,9 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
             }
             //add method to check every id as well
         }
-        Sleep(1000);
+
+
     }
-}
 
 //Tutorial: auto iterator
 //https://stackoverflow.com/questions/3434256/use-the-auto-keyword-in-c-stl
