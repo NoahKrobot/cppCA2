@@ -34,13 +34,18 @@ struct Tile {
     int getY() const {
         return y;
     }
+    int getPopulated() const {
+        return populated;
+    }
 
     int x;
     int y;
+    bool populated;
 
-    Tile(int inputX, int inputY) {
+    Tile(int inputX, int inputY, bool inputPopulated) {
         x = inputX;
         y = inputY;
+        populated = inputPopulated;
     }
 
 };
@@ -84,6 +89,16 @@ int main() {
 
     while (window.isOpen())
     {
+
+        vector<Tile> tiles;
+
+        for (int x = 1; x <= 9; ++x) {
+            for (int y = 1; y <= 9; ++y) {
+                Tile newTile(x, y, false);
+                tiles.push_back(newTile);
+            }
+        }
+
         sf::Event event;
 
         while (window.pollEvent(event))
@@ -122,32 +137,20 @@ int main() {
         }
         //draw a board
         else{
+            //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
 
+             int tileSize = 50;
+             int padding = 5;
+
+            for (int tileLoop = 0; tileLoop< tiles.size();tileLoop++) {
+                sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
+                sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
+                singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding), tiles.at(tileLoop).getY() * (tileSize + padding));
+                window.draw(singleTileShape);
+            }
         }
-
         window.display();
     }
-
-
-
-
-
-
-    vector<Tile> tiles;
-
-
-    for (int x = 1; x <= 9; ++x) {
-        for (int y = 1; y <= 9; ++y) {
-            Tile newTile(x, y);
-            tiles.push_back(newTile);
-        }
-    }
-
-    for(int qw=0;qw<tiles.size();qw++){
-        cout<<tiles.at(qw).getX()<<endl;
-        cout<<tiles.at(qw).getY()<<endl;
-    }
-
 
 
 
