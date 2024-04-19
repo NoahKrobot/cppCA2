@@ -1,4 +1,6 @@
 //for sfml i used tutorials from this website: https://www.sfml-dev.org/tutorials/2.6/
+// https://en.sfml-dev.org/forums/index.php?topic=22084.0
+
 
 #include <iostream>
 #include "headers/Bug.h"
@@ -24,11 +26,32 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
 
 sf::Font font;
 
+struct Tile {
+    int getX() const {
+        return x;
+    }
+
+    int getY() const {
+        return y;
+    }
+
+    int x;
+    int y;
+
+    Tile(int inputX, int inputY) {
+        x = inputX;
+        y = inputY;
+    }
+
+};
+
 
 int main() {
 
 
+
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
+
 
 
 
@@ -54,6 +77,8 @@ int main() {
     txt_Exit.setFillColor(sf::Color::Red);
     txt_Exit.setPosition(200,150);
 
+    bool showExitButton = true;
+
 
 
 
@@ -66,9 +91,7 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close();
 
-
             sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-
 
             //exit button functionallity done
             if (txt_Exit.getGlobalBounds().contains(mousePosition))
@@ -78,14 +101,30 @@ int main() {
                     // left mouse button is pressed: shoot
                     window.close();
                 }
+            }else if (txt_StartGame.getGlobalBounds().contains(mousePosition))
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
+                    showExitButton = false;
+                }
             }
 
 
         }
 
         window.clear();
-        window.draw(txt_StartGame);
-        window.draw(txt_Exit);
+
+
+        //start game screen clear
+        if(showExitButton){
+            window.draw(txt_Exit);
+            window.draw(txt_StartGame);
+        }
+        //draw a board
+        else{
+
+        }
+
         window.display();
     }
 
@@ -94,8 +133,20 @@ int main() {
 
 
 
+    vector<Tile> tiles;
 
 
+    for (int x = 1; x <= 9; ++x) {
+        for (int y = 1; y <= 9; ++y) {
+            Tile newTile(x, y);
+            tiles.push_back(newTile);
+        }
+    }
+
+    for(int qw=0;qw<tiles.size();qw++){
+        cout<<tiles.at(qw).getX()<<endl;
+        cout<<tiles.at(qw).getY()<<endl;
+    }
 
 
 
