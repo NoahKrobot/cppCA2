@@ -65,6 +65,22 @@ int main() {
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+
+            sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+
+
+            //exit button functionallity done
+            if (txt_Exit.getGlobalBounds().contains(mousePosition))
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
+                    // left mouse button is pressed: shoot
+                    window.close();
+                }
+            }
+
+
         }
 
         window.clear();
