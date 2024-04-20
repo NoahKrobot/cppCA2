@@ -71,16 +71,16 @@ void Crawler::move() {
 void Crawler::updatePositionDependingOnDirection(int direction){
     switch (direction) {
         case 1: //north
-            position.setX(position.getX() - 1);
+            position.setY(position.getY() - 1);
             break;
         case 2: //east
-            position.setY(position.getY() + 1);
-            break;
-        case 3: //south
             position.setX(position.getX() + 1);
             break;
+        case 3: //south
+            position.setY(position.getY() + 1);
+            break;
         case 4: //west
-            position.setY(position.getY() - 1);
+            position.setX(position.getX() - 1);
             break;
     }
 };

@@ -11,21 +11,17 @@
 #include "headers/Hopper.h"
 #include "headers/El_Diagonal.h"
 #include "headers/Board.h"
-#include <synchapi.h>
+
 #include <SFML/Graphics.hpp>
+#include <synchapi.h>
 
 using namespace std;
 
 void initializeBugBoard();
-
 void displayLifeHistory();
-
 void displayAllCells();
-
 void runSimulation();
-
 void exitProgram();
-
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
 
 
@@ -39,18 +35,30 @@ struct Tile {
     int getY() const {
         return y;
     }
-
     int getPopulated() const {
         return populated;
+    }
+
+    void setX(int xInput){
+        x =xInput;
+    }
+
+
+    void setY(int yInput){
+        y =yInput;
+    }
+
+    void setPopulated(int inputPop){
+        populated = inputPop;
     }
 
     int x;
     int y;
     int populated;
     //0 - empty
-    //1 - crawler
-    //2 - hopper
-    //3 - el diagonal
+    //1 - crawler - red
+    //2 - hopper - blue
+    //3 - el diagonal - yellow
 
     Tile(int inputX, int inputY, int populationType) {
         x = inputX;
@@ -64,6 +72,7 @@ struct Tile {
 int main() {
 
 
+
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
 
 
@@ -71,19 +80,29 @@ int main() {
 
     vector<Bug *> bug_vector;
 
-    Crawler *craw = new Crawler('C', 1, 1, 1, 3, 3);
+    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3);
     bug_vector.push_back(craw);
 
-    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
-    bug_vector.push_back(hopp);
-    Hopper *hopp2 = new Hopper('H', 2, 5, 2, 4, 4, 6);
-    bug_vector.push_back(hopp2);
 
-    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
-    bug_vector.push_back(eldi);
+
+//    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
+//    bug_vector.push_back(hopp);
+//    Hopper *hopp2 = new Hopper('H', 2, 5, 2, 4, 4, 6);
+//    bug_vector.push_back(hopp2);
+//
+//    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
+//    bug_vector.push_back(eldi);
 
     //tiles vector
     vector<Tile> tiles;
+    int typeOfPupulationNumber = 0;
+    char typeOfBugCheck = ' ';
+
+
+
+
+
+
 
 
 
@@ -93,42 +112,114 @@ int main() {
         return 1;
     }
 
+
+
     sf::Text txt_StartGame;
     txt_StartGame.setFont(font);
     txt_StartGame.setString("Start Game");
     txt_StartGame.setCharacterSize(24);
     txt_StartGame.setFillColor(sf::Color::Red);
-    txt_StartGame.setPosition(200, 100);
+    txt_StartGame.setPosition(200,100);
 
     sf::Text txt_Exit;
     txt_Exit.setFont(font);
     txt_Exit.setString("Exit");
     txt_Exit.setCharacterSize(24);
     txt_Exit.setFillColor(sf::Color::Red);
-    txt_Exit.setPosition(200, 150);
+    txt_Exit.setPosition(200,150);
 
     bool showExitButton = true;
+    bool wasNotYetTapped= false;
+
+    for (int x = 1; x <= 9; ++x) {
+
+        for (int y = 1; y <= 9; ++y) {
+            typeOfPupulationNumber=0;
+
+            for(int w=0;w<bug_vector.size();w++){
+
+                if(bug_vector.at(w)->getPosition().getX() == x
+                   && bug_vector.at(w)->getPosition().getX() == y
+                        ){
+                    typeOfBugCheck = bug_vector.at(w)->getType();
+                    if(typeOfBugCheck == 'C'){
+                        typeOfPupulationNumber = 1;
+                    }else if(typeOfBugCheck == 'H'){
+                        typeOfPupulationNumber = 2;
+                    }else{
+                        typeOfPupulationNumber = 3;
+                    }
+                }
+            }
+            Tile newTile(x, y, typeOfPupulationNumber);
+            tiles.push_back(newTile);
+        }
+    }
 
 
-    while (window.isOpen()) {
+    while (window.isOpen())
+    {
+        Sleep(1000);
+
+
+        for (int i = 0; i < bug_vector.size(); i++) {
+            bug_vector.at(i)->move();
+            cout<<bug_vector.at(i)->getPosition().getX()<<endl;
+            cout<<bug_vector.at(i)->getPosition().getY()<<endl;
+        }
+
+
+        tiles.clear();
+
+        for(int i=0; i<tiles.size();i++){
+
+            for(int j=0;j<bug_vector.size();j++){
+                if(tiles.at(i).getX() == bug_vector.at(j)->getPosition().getX()
+                && tiles.at(i).getY() == bug_vector.at(j)->getPosition().getY()
+                ){
+                    typeOfBugCheck = bug_vector.at(j)->getType();
+                    if(typeOfBugCheck == 'C'){
+                        typeOfPupulationNumber = 1;
+                    }else if(typeOfBugCheck == 'H'){
+                        typeOfPupulationNumber = 2;
+                    }else if(typeOfBugCheck == 'E'){
+                        typeOfPupulationNumber = 3;
+                    }else{
+                        typeOfPupulationNumber = 0;
+                    }
+
+
+                }
+            }
+            tiles.at(i).setPopulated(typeOfPupulationNumber);
+
+        }
+
+
         //Tiles
+
 
         sf::Event event;
 
-        while (window.pollEvent(event)) {
+        while (window.pollEvent(event))
+        {
             if (event.type == sf::Event::Closed)
                 window.close();
 
             sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
             //exit button functionallity done
-            if (txt_Exit.getGlobalBounds().contains(mousePosition)) {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            if (txt_Exit.getGlobalBounds().contains(mousePosition))
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
                     // left mouse button is pressed: shoot
                     window.close();
                 }
-            } else if (txt_StartGame.getGlobalBounds().contains(mousePosition)) {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            }else if (txt_StartGame.getGlobalBounds().contains(mousePosition))
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                {
                     showExitButton = false;
                 }
             }
@@ -140,98 +231,34 @@ int main() {
 
 
         //start game screen clear
-        if (showExitButton) {
+        if(showExitButton){
             window.draw(txt_Exit);
             window.draw(txt_StartGame);
         }
             //draw a board
-        else {
+        else{
+            //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
+            wasNotYetTapped = true;
+            int tileSize = 50;
+            int padding = 5;
 
-            int typeOfPupulationNumber = 0;
-            char typeOfBugCheck = ' ';
-
-            int aliveCount = 100;
-            do {
-                aliveCount++;
-//                for (int bugAliveCount = 0; bugAliveCount < bug_vector.size(); bugAliveCount++) {
-//
-//                    if (bug_vector.at(bugAliveCount)->getAlive()) {
-//                        aliveCount++;
-//                    }
-//                }
-
-
-                //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
-                int tileSize = 50;
-                int padding = 5;
-
-                for (int tileLoop = 0; tileLoop < tiles.size(); tileLoop++) {
-                    sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
-                    sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
-                    singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding),
-                                                tiles.at(tileLoop).getY() * (tileSize + padding));
-                    if (tiles.at(tileLoop).getPopulated() == 0) {
-                        singleTileShape.setFillColor(sf::Color::White);
-                    } else if (tiles.at(tileLoop).getPopulated() == 1) {
-                        singleTileShape.setFillColor(sf::Color::Red);
-                    } else if (tiles.at(tileLoop).getPopulated() == 2) {
-                        singleTileShape.setFillColor(sf::Color::Blue);
-                    } else if (tiles.at(tileLoop).getPopulated() == 3) {
-                        singleTileShape.setFillColor(sf::Color::Cyan);
-                    }
-                    window.draw(singleTileShape);
+            for (int tileLoop = 0; tileLoop< tiles.size();tileLoop++) {
+                sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
+                sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
+                singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding), tiles.at(tileLoop).getY() * (tileSize + padding));
+                if(tiles.at(tileLoop).getPopulated()==0){
+                    singleTileShape.setFillColor(sf::Color::White);
+                }else  if(tiles.at(tileLoop).getPopulated()==1){
+                    singleTileShape.setFillColor(sf::Color::Red);
+                }else  if(tiles.at(tileLoop).getPopulated()==2){
+                    singleTileShape.setFillColor(sf::Color::Blue);
+                }else  if(tiles.at(tileLoop).getPopulated()==3){
+                    singleTileShape.setFillColor(sf::Color::Cyan);
                 }
-               (new Board())->tapBugBoard(bug_vector, bug_vector.size());
-
-
-
-
-
-
-                //set the population to the tile
-                for (int x = 1; x <= 9; ++x) {
-                    for (int y = 1; y <= 9; ++y) {
-                        typeOfPupulationNumber = 0;
-
-                        for (int w = 0; w < bug_vector.size(); w++) {
-
-                            if (bug_vector.at(w)->getPosition().getX() == x
-                                && bug_vector.at(w)->getPosition().getX() == y
-                                    ) {
-                                typeOfBugCheck = bug_vector.at(w)->getType();
-                                if (typeOfBugCheck == 'C') {
-                                    typeOfPupulationNumber = 1;
-                                } else if (typeOfBugCheck == 'H') {
-                                    typeOfPupulationNumber = 2;
-                                }else if (typeOfBugCheck == 'E') {
-                                    typeOfPupulationNumber = 3;
-                                }else{
-                                    typeOfPupulationNumber = 0;
-                                }
-                            }
-                        }
-                        Tile newTile(x, y, typeOfPupulationNumber);
-                        tiles.push_back(newTile);
-                    }
-                }
-
-
-
-
-
-
-
-                Sleep(1000);
-
-            } while (aliveCount < 10);
-
-
-
-
+                window.draw(singleTileShape);
+            }
         }
-
         window.display();
-
     }
 
 //    int choice = -1;
@@ -256,16 +283,16 @@ int main() {
 //                initializeBugBoard();
 //                break;
 //            case 2:
-//                (new Board())->displayAllBugs(bug_vector, bug_vector.size());
+//                (new Board())->displayAllBugs(bug_vector, 3);
 //                break;
 //            case 3:
-//                (new Board())->findBugById(bug_vector, bug_vector.size());
+//                (new Board())->findBugById(bug_vector, 3);
 //                break;
 //            case 4:
-//                (new Board())->tapBugBoard(bug_vector, bug_vector.size());
+//                (new Board())->tapBugBoard(bug_vector, bug_vector);
 //                break;
 //            case 5:
-//                (new Board())->displayLifeHistory(bug_vector, bug_vector.size());
+//                (new  Board())->displayLifeHistory(bug_vector, 3);
 //                break;
 //            case 6:
 //                displayAllCells();
@@ -274,7 +301,7 @@ int main() {
 //                runSimulation();
 //                break;
 //            case 8:
-//                (new Board())->exitProgram(bug_vector, bug_vector.size());
+//                (new  Board())->exitProgram(bug_vector, 3);
 //                break;
 //            default:
 //                cout << "Invalid choice. Please enter a number between 1 and 8." << endl;
@@ -347,5 +374,4 @@ void runSimulation() {
 void exitProgram() {
     cout << "Exiting program..." << endl;
 }
-
 
