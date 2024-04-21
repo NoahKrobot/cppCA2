@@ -62,7 +62,7 @@ bool Bug::isWayBlocked() {
     cout << "Direction: " << Bug::getDirection() << endl;
 
 
-    if (Bug::getType() == 'C' || Bug::getType() == 'E') {
+    if (Bug::getType() == 'C' ) {
 
         switch (Bug::getDirection()) {
             //north
@@ -96,29 +96,8 @@ bool Bug::isWayBlocked() {
                 }
             }
 
-
-            case 5: //northeast
-                if (Bug::getPosition().getX() - 1 == -1 || Bug::getPosition().getY() + 1 == 10) {
-                    return true;
-                }
-                break;
-            case 6: //northwest
-                if (Bug::getPosition().getX() - 1 == -1 || Bug::getPosition().getY() - 1 == -1) {
-                    return true;
-                }
-                break;
-            case 7: //southeast
-                if (Bug::getPosition().getX() + 1 == 10 || Bug::getPosition().getY() + 1 == 10) {
-                    return true;
-                }
-                break;
-            case 8: //southwest
-                if (Bug::getPosition().getX() + 1 == 10 || Bug::getPosition().getY() - 1 == -1) {
-                    return true;
-                }
-                break;
         }
-    } else {
+    } else if(Bug::getType() == 'H') {
 
         switch (Bug::getDirection()) {
             //north
@@ -152,6 +131,32 @@ bool Bug::isWayBlocked() {
                 }
             }
         }
+    }else{
+
+        switch (Bug::getDirection()) {
+
+            case 5: //northeast x+1, y-1
+                if (Bug::getPosition().getY() == 1 || Bug::getPosition().getX() == 9) {
+                    return true;
+                }
+                break;
+            case 6: //northwest x-1, y-1
+                if (Bug::getPosition().getY() == 1 || Bug::getPosition().getX() == 1) {
+                    return true;
+                }
+                break;
+            case 7: //southeast x+1, y+1
+                if (Bug::getPosition().getY() == 9 || Bug::getPosition().getX() == 9) {
+                    return true;
+                }
+                break;
+            case 8: //southwest x-1, y+1
+                if (Bug::getPosition().getY() == 9 || Bug::getPosition().getX() == 1) {
+                    return true;
+                }
+                break;
+        }
+
     }
 
     return false;

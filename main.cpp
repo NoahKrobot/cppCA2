@@ -76,18 +76,18 @@ int main() {
 
     vector<Bug *> bug_vector;
 
-    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3);
-    bug_vector.push_back(craw);
-
-
-
-    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 2);
-    bug_vector.push_back(hopp);
+//    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3);
+//    bug_vector.push_back(craw);
+//
+//
+//
+//    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 2);
+//    bug_vector.push_back(hopp);
 //    Hopper *hopp2 = new Hopper('H', 2, 5, 2, 4, 4, 6);
 //    bug_vector.push_back(hopp2);
 //
-//    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
-//    bug_vector.push_back(eldi);
+    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
+    bug_vector.push_back(eldi);
 
     //tiles vector
     vector<Tile> tiles;
@@ -201,7 +201,7 @@ Tile newTile(x, y, typeOfPupulationNumber);
                                 typeOfPupulationNumber = 1;
                             } else if (typeOfBugCheck == 'H') {
                                 typeOfPupulationNumber = 2;
-                            } else if (typeOfBugCheck == 'E') {
+                            } else{
                                 typeOfPupulationNumber = 3;
                             }
                         }
