@@ -52,14 +52,18 @@ void Bug::setAlive(bool alive) {
     Bug::alive = alive;
 }
 
+void Bug::setDirection(int directionVariable) {
+    Bug::direction = directionVariable;
+}
 
 
 bool Bug::isWayBlocked(){
+    cout<<"Direction: "<<Bug::getDirection()<<endl;
 
     switch(Bug::getDirection()){
         //north
         case 1:{
-            if (Bug::getPosition().getX() == 1){
+            if (Bug::getPosition().getY() ==1){
                 return true;
             }
             break;
@@ -67,7 +71,7 @@ bool Bug::isWayBlocked(){
 
         //east
         case 2:{
-            if (Bug::getPosition().getY() == 9){
+            if (Bug::getPosition().getX() == 9){
                 return true;
             }
             break;
@@ -75,7 +79,7 @@ bool Bug::isWayBlocked(){
 
         //south
         case 3:{
-            if (Bug::getPosition().getX() == 9){
+            if (Bug::getPosition().getY() == 9){
                 return true;
             }
             break;
@@ -83,7 +87,7 @@ bool Bug::isWayBlocked(){
 
         //west
         case 4:{
-            if (Bug::getPosition().getY()  == 1){
+            if (Bug::getPosition().getX() == 1){
                 return true;
             }
         }

@@ -65,6 +65,7 @@ public:
     void setPosition(const Pair &pos);
 
 
+    void setDirection(int directionVariable);
 };
 
 
