@@ -21,6 +21,12 @@ Crawler::Crawler(char type, int id,int x,int y, int direction, int size){
 void Crawler::move() {
     random_device rd;
     mt19937 gen(rd());
+
+//    if(position.getY()<9){
+//        position.setY(position.getY() + 1);
+//    }else{
+//        position.setY(position.getY() - 1);
+//    }
     switch (direction) {
         case 1: //north
             if(!isWayBlocked()){

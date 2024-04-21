@@ -18,10 +18,15 @@
 using namespace std;
 
 void initializeBugBoard();
+
 void displayLifeHistory();
+
 void displayAllCells();
+
 void runSimulation();
+
 void exitProgram();
+
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
 
 
@@ -35,21 +40,13 @@ struct Tile {
     int getY() const {
         return y;
     }
+
     int getPopulated() const {
         return populated;
     }
 
-    void setX(int xInput){
-        x =xInput;
-    }
-
-
-    void setY(int yInput){
-        y =yInput;
-    }
-
-    void setPopulated(int inputPop){
-        populated = inputPop;
+    void setPopulation(int population) {
+        populated = population;
     }
 
     int x;
@@ -70,7 +67,6 @@ struct Tile {
 
 
 int main() {
-
 
 
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
@@ -99,13 +95,6 @@ int main() {
     char typeOfBugCheck = ' ';
 
 
-
-
-
-
-
-
-
     sf::Font font;
     if (!font.loadFromFile("C:/Users/noah3/OneDrive/CAs/cppCA2/Roboto-Medium.ttf")) {
         std::cerr << "Error loading font\n";
@@ -113,87 +102,38 @@ int main() {
     }
 
 
-
     sf::Text txt_StartGame;
     txt_StartGame.setFont(font);
     txt_StartGame.setString("Start Game");
     txt_StartGame.setCharacterSize(24);
     txt_StartGame.setFillColor(sf::Color::Red);
-    txt_StartGame.setPosition(200,100);
+    txt_StartGame.setPosition(200, 100);
 
     sf::Text txt_Exit;
     txt_Exit.setFont(font);
     txt_Exit.setString("Exit");
     txt_Exit.setCharacterSize(24);
     txt_Exit.setFillColor(sf::Color::Red);
-    txt_Exit.setPosition(200,150);
+    txt_Exit.setPosition(200, 150);
 
     bool showExitButton = true;
-    bool wasNotYetTapped= false;
+    bool wasNotYetTapped = false;
 
     for (int x = 1; x <= 9; ++x) {
 
         for (int y = 1; y <= 9; ++y) {
-            typeOfPupulationNumber=0;
-
-            for(int w=0;w<bug_vector.size();w++){
-
-                if(bug_vector.at(w)->getPosition().getX() == x
-                   && bug_vector.at(w)->getPosition().getX() == y
-                        ){
-                    typeOfBugCheck = bug_vector.at(w)->getType();
-                    if(typeOfBugCheck == 'C'){
-                        typeOfPupulationNumber = 1;
-                    }else if(typeOfBugCheck == 'H'){
-                        typeOfPupulationNumber = 2;
-                    }else{
-                        typeOfPupulationNumber = 3;
-                    }
-                }
-            }
-            Tile newTile(x, y, typeOfPupulationNumber);
+Tile newTile(x, y, typeOfPupulationNumber);
             tiles.push_back(newTile);
         }
     }
 
 
-    while (window.isOpen())
-    {
-        Sleep(1000);
+    while (window.isOpen()) {
 
 
-        for (int i = 0; i < bug_vector.size(); i++) {
-            bug_vector.at(i)->move();
-            cout<<bug_vector.at(i)->getPosition().getX()<<endl;
-            cout<<bug_vector.at(i)->getPosition().getY()<<endl;
-        }
 
 
-        tiles.clear();
 
-        for(int i=0; i<tiles.size();i++){
-
-            for(int j=0;j<bug_vector.size();j++){
-                if(tiles.at(i).getX() == bug_vector.at(j)->getPosition().getX()
-                && tiles.at(i).getY() == bug_vector.at(j)->getPosition().getY()
-                ){
-                    typeOfBugCheck = bug_vector.at(j)->getType();
-                    if(typeOfBugCheck == 'C'){
-                        typeOfPupulationNumber = 1;
-                    }else if(typeOfBugCheck == 'H'){
-                        typeOfPupulationNumber = 2;
-                    }else if(typeOfBugCheck == 'E'){
-                        typeOfPupulationNumber = 3;
-                    }else{
-                        typeOfPupulationNumber = 0;
-                    }
-
-
-                }
-            }
-            tiles.at(i).setPopulated(typeOfPupulationNumber);
-
-        }
 
 
         //Tiles
@@ -201,25 +141,20 @@ int main() {
 
         sf::Event event;
 
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
 
             sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
             //exit button functionallity done
-            if (txt_Exit.getGlobalBounds().contains(mousePosition))
-            {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
+            if (txt_Exit.getGlobalBounds().contains(mousePosition)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     // left mouse button is pressed: shoot
                     window.close();
                 }
-            }else if (txt_StartGame.getGlobalBounds().contains(mousePosition))
-            {
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                {
+            } else if (txt_StartGame.getGlobalBounds().contains(mousePosition)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     showExitButton = false;
                 }
             }
@@ -231,32 +166,71 @@ int main() {
 
 
         //start game screen clear
-        if(showExitButton){
+        if (showExitButton) {
             window.draw(txt_Exit);
             window.draw(txt_StartGame);
-        }
-            //draw a board
-        else{
+        } else {
+          //draw a board
+
+
             //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
             wasNotYetTapped = true;
             int tileSize = 50;
             int padding = 5;
 
-            for (int tileLoop = 0; tileLoop< tiles.size();tileLoop++) {
+            //1. moving a bug
+            for (int i = 0; i < bug_vector.size(); i++) {
+                bug_vector.at(i)->move();
+                cout << bug_vector.at(i)->getPosition().getX() << endl;
+                cout << bug_vector.at(i)->getPosition().getY() << endl;
+                cout << endl;
+            }
+
+
+            for (int tileLoop =0; tileLoop<tiles.size();tileLoop++) {
+                    typeOfPupulationNumber = 0;
+
+                    //2.1. checking which bug populates the tile
+                    for (int j = 0; j < bug_vector.size(); j++) {
+
+                        if (bug_vector.at(j)->getPosition().getX() == tiles.at(tileLoop).getX()
+                            && bug_vector.at(j)->getPosition().getY() == tiles.at(tileLoop).getY()
+                            ) {
+                            typeOfBugCheck = bug_vector.at(j)->getType();
+                            if (typeOfBugCheck == 'C') {
+                                typeOfPupulationNumber = 1;
+                            } else if (typeOfBugCheck == 'H') {
+                                typeOfPupulationNumber = 2;
+                            } else if (typeOfBugCheck == 'E') {
+                                typeOfPupulationNumber = 3;
+                            }
+                        }
+                        tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
+                    }
+                    //2.2. checking the color
+
                 sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
                 sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
-                singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding), tiles.at(tileLoop).getY() * (tileSize + padding));
-                if(tiles.at(tileLoop).getPopulated()==0){
+                singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding),
+                                            tiles.at(tileLoop).getY() * (tileSize + padding));
+
+
+                if (tiles.at(tileLoop).getPopulated() == 0) {
                     singleTileShape.setFillColor(sf::Color::White);
-                }else  if(tiles.at(tileLoop).getPopulated()==1){
+                } else if (tiles.at(tileLoop).getPopulated() == 1) {
                     singleTileShape.setFillColor(sf::Color::Red);
-                }else  if(tiles.at(tileLoop).getPopulated()==2){
+                } else if (tiles.at(tileLoop).getPopulated() == 2) {
                     singleTileShape.setFillColor(sf::Color::Blue);
-                }else  if(tiles.at(tileLoop).getPopulated()==3){
+                } else if (tiles.at(tileLoop).getPopulated() == 3) {
                     singleTileShape.setFillColor(sf::Color::Cyan);
                 }
                 window.draw(singleTileShape);
             }
+            window.display();
+
+            Sleep(1000);
+
+
         }
         window.display();
     }
