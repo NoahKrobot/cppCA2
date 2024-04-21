@@ -1,12 +1,13 @@
 #include <iostream>
 #include "../headers/Bug.h"
 #include <random>
+
 // getters
 int Bug::getId() const {
     return id;
 }
 
-const Pair Bug::getPosition() const{
+const Pair Bug::getPosition() const {
     return position;
 }
 
@@ -18,23 +19,23 @@ int Pair::getY() const {
     return toPushY;
 }
 
-int Bug::getSize() const{
+int Bug::getSize() const {
     return size;
 }
 
-bool Bug::getAlive() const{
+bool Bug::getAlive() const {
     return alive;
 }
 
-int Bug::getDirection() const{
+int Bug::getDirection() const {
     return direction;
 }
 
-char Bug::getType() const{
+char Bug::getType() const {
     return type;
 }
 
-const list<Pair> & Bug::getPath()  {
+const list<Pair> &Bug::getPath() {
     return path;
 }
 
@@ -57,74 +58,101 @@ void Bug::setDirection(int directionVariable) {
 }
 
 
-bool Bug::isWayBlocked(){
-    cout<<"Direction: "<<Bug::getDirection()<<endl;
+bool Bug::isWayBlocked() {
+    cout << "Direction: " << Bug::getDirection() << endl;
 
-    switch(Bug::getDirection()){
-        //north
-        case 1:{
-            if (Bug::getPosition().getY() ==1){
-                return true;
+
+    if (Bug::getType() == 'C' || Bug::getType() == 'E') {
+
+        switch (Bug::getDirection()) {
+            //north
+            case 1: {
+                if (Bug::getPosition().getY() == 1) {
+                    return true;
+                }
+                break;
             }
-            break;
+
+                //east
+            case 2: {
+                if (Bug::getPosition().getX() == 9) {
+                    return true;
+                }
+                break;
+            }
+
+                //south
+            case 3: {
+                if (Bug::getPosition().getY() == 9) {
+                    return true;
+                }
+                break;
+            }
+
+                //west
+            case 4: {
+                if (Bug::getPosition().getX() == 1) {
+                    return true;
+                }
+            }
+
+
+            case 5: //northeast
+                if (Bug::getPosition().getX() - 1 == -1 || Bug::getPosition().getY() + 1 == 10) {
+                    return true;
+                }
+                break;
+            case 6: //northwest
+                if (Bug::getPosition().getX() - 1 == -1 || Bug::getPosition().getY() - 1 == -1) {
+                    return true;
+                }
+                break;
+            case 7: //southeast
+                if (Bug::getPosition().getX() + 1 == 10 || Bug::getPosition().getY() + 1 == 10) {
+                    return true;
+                }
+                break;
+            case 8: //southwest
+                if (Bug::getPosition().getX() + 1 == 10 || Bug::getPosition().getY() - 1 == -1) {
+                    return true;
+                }
+                break;
         }
+    } else {
 
-        //east
-        case 2:{
-            if (Bug::getPosition().getX() == 9){
-                return true;
+        switch (Bug::getDirection()) {
+            //north
+            case 1: {
+                if (Bug::getPosition().getY() == 1) {
+                    return true;
+                }
+                break;
             }
-            break;
+
+                //east
+            case 2: {
+                if (Bug::getPosition().getX() == 9) {
+                    return true;
+                }
+                break;
+            }
+
+                //south
+            case 3: {
+                if (Bug::getPosition().getY() == 9) {
+                    return true;
+                }
+                break;
+            }
+
+            //west
+            case 4: {
+                if (Bug::getPosition().getX() == 1) {
+                    return true;
+                }
+            }
         }
-
-        //south
-        case 3:{
-            if (Bug::getPosition().getY() == 9){
-                return true;
-            }
-            break;
-        }
-
-        //west
-        case 4:{
-            if (Bug::getPosition().getX() == 1){
-                return true;
-            }
-        }
-
-
-        case 5: //northeast
-            if(Bug::getPosition().getX()-1 == -1 || Bug::getPosition().getY()+1 == 10){
-                return true;
-            }
-            break;
-        case 6: //northwest
-            if(Bug::getPosition().getX()-1 == -1 || Bug::getPosition().getY()-1 == -1){
-                return true;
-            }
-            break;
-        case 7: //southeast
-            if(Bug::getPosition().getX()+1 == 10 || Bug::getPosition().getY()+1 == 10){
-                return true;
-            }
-            break;
-        case 8: //southwest
-            if(Bug::getPosition().getX()+1 == 10 || Bug::getPosition().getY()-1 == -1){
-                return true;
-            }
-            break;
     }
-
-
-
-
-
-
-
-
-
-
-
 
     return false;
 

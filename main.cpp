@@ -81,8 +81,8 @@ int main() {
 
 
 
-//    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 6);
-//    bug_vector.push_back(hopp);
+    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 2);
+    bug_vector.push_back(hopp);
 //    Hopper *hopp2 = new Hopper('H', 2, 5, 2, 4, 4, 6);
 //    bug_vector.push_back(hopp2);
 //
