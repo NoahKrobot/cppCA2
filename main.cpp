@@ -80,9 +80,9 @@ int main() {
 
     vector<Bug *> bug_vector;
 
-    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 2, "ALIVE");
+    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3, "ALIVE");
     bug_vector.push_back(craw);
-    Hopper *hopp = new Hopper('H', 2, 5, 5, 4, 4, 2, "ALIVE");
+    Hopper *hopp = new Hopper('H', 2, 5, 5, 4, 2, 2, "ALIVE");
     bug_vector.push_back(hopp);
     El_Diagonal *eldi = new El_Diagonal('E', 3, 5, 5, 5, 3, "ALIVE");
     bug_vector.push_back(eldi);
@@ -265,10 +265,13 @@ int main() {
                                     bug_vectorSmallBugs.push_back(bug_vectorEat.at(idc));
                                 }
                             }
+                            maxID = bug_vectorEat.at(eat1)->getId();
+                            maxSize = bug_vectorEat.at(eat1)->getSize();
                         }
+                        cout<<"maxID "<<maxID<<endl;
                     }
 
-                    cout<<"maxID "<<maxID<<endl;
+
 
                     //push equal vectors in new array
                     for (int eat2 = 0; eat2 < bug_vectorEat.size(); eat2++) {
