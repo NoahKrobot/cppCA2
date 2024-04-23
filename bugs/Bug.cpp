@@ -54,7 +54,7 @@ void Bug::setSize(int size) {
 }
 
 void Bug::setState(string stateIn) {
-    Bug::state = state;
+    Bug::state = stateIn;
 }
 
 void Bug::setAlive(bool alive) {

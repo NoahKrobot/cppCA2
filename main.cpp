@@ -176,7 +176,7 @@ int main() {
 
             //1. moving a bug
             for (int i = 0; i < bug_vector.size(); i++) {
-                if(bug_vector.at(i)->getState() == "ALIVE"){
+                if(bug_vector.at(i)->getState()== "ALIVE"){
                     bug_vector.at(i)->move();
                 }
             }
@@ -249,11 +249,36 @@ int main() {
                 }
 
                 if(bug_vectorEat.size()>1){
-                    cout<<"Hooooooorayyy"<<endl;
+
+                    int maxSize=bug_vectorEat.at(0)->getSize();
+                    int maxID=bug_vectorEat.at(0)->getId();
+
+                    for(int eat1=1;eat1<bug_vectorEat.size();eat1++){
+                        if(maxSize > bug_vectorEat.at(eat1)->getSize()){
+                            bug_vectorSmallBugs.push_back(bug_vectorEat.at(eat1));
+                        }else if(maxSize == bug_vectorEat.at(eat1)->getSize()){
+                            bug_vectorBigEquals.push_back(bug_vectorEat.at(eat1));
+                        }else{
+                            for(int idc=0;idc<bug_vectorEat.size();idc++){
+                                if(maxID == bug_vectorEat.at(idc)->getId()){
+                                    bug_vectorSmallBugs.push_back(bug_vectorEat.at(idc));
+                                }
+                            }
+                        }
+                    }
+
+                    for(int sma=0;sma<bug_vectorSmallBugs.size();sma++){
+                        bug_vectorSmallBugs.at(sma)->setState("Dead");
+                    }
+
+
+
+
 
                 }
-
             }
+
+
 
             window.display();
 
