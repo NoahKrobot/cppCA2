@@ -67,7 +67,6 @@ void Bug::setDirection(int directionVariable) {
 
 
 bool Bug::isWayBlocked() {
-    cout << "Direction: " << Bug::getDirection() << endl;
 
 
     if (Bug::getType() == 'C' ) {

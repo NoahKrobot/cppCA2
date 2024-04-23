@@ -76,6 +76,7 @@ int main() {
     //bug vector
     vector<Bug *> bug_vectorEat;
     vector<Bug *> bug_vectorBigEquals;
+    vector<Bug *> bug_vectorSmallBugs;
 
     vector<Bug *> bug_vector;
 
@@ -178,50 +179,7 @@ int main() {
                 if(bug_vector.at(i)->getState() == "ALIVE"){
                     bug_vector.at(i)->move();
                 }
-                cout << bug_vector.at(i)->getPosition().getX() << endl;
-                cout << bug_vector.at(i)->getPosition().getY() << endl;
-                cout << "state:" <<bug_vector.at(i)->getState() << endl;
-                cout << endl;
             }
-
-            //1.1 eating the bug
-
-            for(int eat=0;eat<bug_vector.size();eat++){
-                bug_vectorEat.clear();
-                bug_vectorEat.push_back(bug_vector.at(eat));
-                int posXbug1= bug_vector.at(eat)->getPosition().getX();
-                int posYbug1= bug_vector.at(eat)->getPosition().getY();
-                int bug1ID= bug_vector.at(eat)->getId();
-                //add same position bugs to the vector
-                for(int eat2=0;eat2<bug_vector.size();eat2++){
-                    int posXbug2= bug_vector.at(eat2)->getPosition().getX();
-                    int posYbug2= bug_vector.at(eat2)->getPosition().getY();
-                    int bug2ID= bug_vector.at(eat2)->getId();
-
-                    if(bug2ID != bug1ID){
-                        if(posXbug2 == posXbug1 && posYbug2 == posYbug1){
-                            bug_vectorEat.push_back(bug_vector.at(eat2));
-                        }
-                    }
-                }
-
-                //set the max size for first element
-                //check every other element's size and set the maxSize and maxId to that if they
-                    //are bigger
-                    //if they aren't add them to a vector for smaller bugs - don't forget to add the
-                    //previous bug to smallBugVector if the new bug is larger in size
-                //exit the loop and check once again the whole loop if any other bug has the same big size as
-                    //maxSize
-                //if some has, add them to the new vector
-                //decide which of those bugs with maxSize wins randomly
-                    //add the less bug to smallBugVector
-                //go back to the smallBugVectr, get their sizes and set the state to "Eaten by maxBug->getId()"
-                //check which bug has the same id as maxBug from bug_vector and update it's size
-                for(int eat3=1; eat3<bug_vectorEat.size();eat3++){
-
-                }
-            }
-
 
 
 
@@ -270,6 +228,33 @@ int main() {
                 }
                 window.draw(singleTileShape);
             }
+
+
+            //eating the bug
+            int tileX=0;
+            int tileY=0;
+
+            for(int tileC=0;tileC<tiles.size();tileC++){
+                bug_vectorBigEquals.clear();
+                bug_vectorEat.clear();
+                bug_vectorSmallBugs.clear();
+
+                tileX= tiles.at(tileC).getX();
+                tileY= tiles.at(tileC).getY();
+
+                for(int bugC=0;bugC<bug_vector.size();bugC++){
+                    if(bug_vector.at(bugC)->getPosition().getX() == tileX
+                    && bug_vector.at(bugC)->getPosition().getY() == tileY
+                    ) bug_vectorEat.push_back(bug_vector.at(bugC));
+                }
+
+                if(bug_vectorEat.size()>1){
+                    cout<<"Hooooooorayyy"<<endl;
+
+                }
+
+            }
+
             window.display();
 
             Sleep(1000);

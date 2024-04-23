@@ -23,6 +23,7 @@ void Board::displayAllBugs(const vector<Bug *> &bug_vector, int size) {
         cout << "Y position: " << bug_vector.at(i)->getPosition().getY() << endl;
         cout << "alive: " << bug_vector.at(i)->getAlive() << endl;
         cout << "size: " << bug_vector.at(i)->getSize() << endl;
+        cout << "state: " << bug_vector.at(i)->getState() << endl;
         cout << endl;
         cout << endl;
     }
