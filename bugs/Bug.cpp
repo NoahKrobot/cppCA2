@@ -31,6 +31,10 @@ int Bug::getDirection() const {
     return direction;
 }
 
+string Bug::getState() const {
+    return state;
+}
+
 char Bug::getType() const {
     return type;
 }
@@ -47,6 +51,10 @@ void Bug::setPosition(const Pair &pos) {
 
 void Bug::setSize(int size) {
     Bug::size = size;
+}
+
+void Bug::setState(string stateIn) {
+    Bug::state = state;
 }
 
 void Bug::setAlive(bool alive) {
@@ -162,4 +170,5 @@ bool Bug::isWayBlocked() {
     return false;
 
 }
+
 

@@ -13,13 +13,13 @@
 #include <random>
 using namespace std;
 
-El_Diagonal::El_Diagonal(char type, int id,int x,int y, int direction, int size){
+El_Diagonal::El_Diagonal(char type, int id,int x,int y, int direction, int size, string stateIn){
     Pair coordinates(x,y);
     this->size = size;
-    this->alive = true;
     this->position = coordinates;
     this->direction = direction;
     this->id = id;
+    this->state= stateIn;
 }
 
 void El_Diagonal::move() {

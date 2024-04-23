@@ -13,7 +13,7 @@ public:
     void displayCrawlerDetails();
     void move() override;
     void updatePositionDependingOnDirection(int direction);
-    Crawler(char type, int id, int xValue, int yValue, int direction, int size);
+    Crawler(char type, int id, int xValue, int yValue, int direction, int size, string state);
 };
 
 

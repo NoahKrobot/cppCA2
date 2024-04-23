@@ -13,7 +13,7 @@ public:
     string getBugDetails();
     void move();
     void updatePositionDependingOnDirection(int direction);
-    El_Diagonal(char type, int id, int xValue, int yValue, int direction, int size);
+    El_Diagonal(char type, int id, int xValue, int yValue, int direction, int , string state);
 };
 
 #endif //CPPCA2_EL_DIAGONAL_H

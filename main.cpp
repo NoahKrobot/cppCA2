@@ -14,6 +14,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <synchapi.h>
+#include <random>
 
 using namespace std;
 
@@ -73,21 +74,20 @@ int main() {
 
 
     //bug vector
+    vector<Bug *> bug_vectorEat;
+    vector<Bug *> bug_vectorBigEquals;
 
     vector<Bug *> bug_vector;
 
-//    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3);
-//    bug_vector.push_back(craw);
-//
-//
-//
-//    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 2);
-//    bug_vector.push_back(hopp);
-//    Hopper *hopp2 = new Hopper('H', 2, 5, 2, 4, 4, 6);
-//    bug_vector.push_back(hopp2);
-//
-    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7);
+    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3, "ALIVE");
+    bug_vector.push_back(craw);
+    Hopper *hopp = new Hopper('H', 2, 2, 2, 4, 4, 2, "ALIVE");
+    bug_vector.push_back(hopp);
+    El_Diagonal *eldi = new El_Diagonal('E', 3, 3, 3, 5, 7, "ALIVE");
     bug_vector.push_back(eldi);
+
+    Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
+    bug_vector.push_back(craw2);
 
     //tiles vector
     vector<Tile> tiles;
@@ -122,19 +122,13 @@ int main() {
     for (int x = 1; x <= 9; ++x) {
 
         for (int y = 1; y <= 9; ++y) {
-Tile newTile(x, y, typeOfPupulationNumber);
+            Tile newTile(x, y, typeOfPupulationNumber);
             tiles.push_back(newTile);
         }
     }
 
 
     while (window.isOpen()) {
-
-
-
-
-
-
 
         //Tiles
 
@@ -164,13 +158,12 @@ Tile newTile(x, y, typeOfPupulationNumber);
 
         window.clear();
 
-
         //start game screen clear
         if (showExitButton) {
             window.draw(txt_Exit);
             window.draw(txt_StartGame);
         } else {
-          //draw a board
+            //draw a board
 
 
             //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
@@ -178,36 +171,87 @@ Tile newTile(x, y, typeOfPupulationNumber);
             int tileSize = 50;
             int padding = 5;
 
+
+
             //1. moving a bug
             for (int i = 0; i < bug_vector.size(); i++) {
-                bug_vector.at(i)->move();
+                if(bug_vector.at(i)->getState() == "ALIVE"){
+                    bug_vector.at(i)->move();
+                }
                 cout << bug_vector.at(i)->getPosition().getX() << endl;
                 cout << bug_vector.at(i)->getPosition().getY() << endl;
+                cout << "state:" <<bug_vector.at(i)->getState() << endl;
                 cout << endl;
             }
 
+            //1.1 eating the bug
 
-            for (int tileLoop =0; tileLoop<tiles.size();tileLoop++) {
-                    typeOfPupulationNumber = 0;
+            for(int eat=0;eat<bug_vector.size();eat++){
+                bug_vectorEat.clear();
+                bug_vectorEat.push_back(bug_vector.at(eat));
+                int posXbug1= bug_vector.at(eat)->getPosition().getX();
+                int posYbug1= bug_vector.at(eat)->getPosition().getY();
+                int bug1ID= bug_vector.at(eat)->getId();
+                //add same position bugs to the vector
+                for(int eat2=0;eat2<bug_vector.size();eat2++){
+                    int posXbug2= bug_vector.at(eat2)->getPosition().getX();
+                    int posYbug2= bug_vector.at(eat2)->getPosition().getY();
+                    int bug2ID= bug_vector.at(eat2)->getId();
 
-                    //2.1. checking which bug populates the tile
-                    for (int j = 0; j < bug_vector.size(); j++) {
-
-                        if (bug_vector.at(j)->getPosition().getX() == tiles.at(tileLoop).getX()
-                            && bug_vector.at(j)->getPosition().getY() == tiles.at(tileLoop).getY()
-                            ) {
-                            typeOfBugCheck = bug_vector.at(j)->getType();
-                            if (typeOfBugCheck == 'C') {
-                                typeOfPupulationNumber = 1;
-                            } else if (typeOfBugCheck == 'H') {
-                                typeOfPupulationNumber = 2;
-                            } else{
-                                typeOfPupulationNumber = 3;
-                            }
+                    if(bug2ID != bug1ID){
+                        if(posXbug2 == posXbug1 && posYbug2 == posYbug1){
+                            bug_vectorEat.push_back(bug_vector.at(eat2));
                         }
-                        tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
                     }
-                    //2.2. checking the color
+                }
+
+                //set the max size for first element
+                //check every other element's size and set the maxSize and maxId to that if they
+                    //are bigger
+                    //if they aren't add them to a vector for smaller bugs - don't forget to add the
+                    //previous bug to smallBugVector if the new bug is larger in size
+                //exit the loop and check once again the whole loop if any other bug has the same big size as
+                    //maxSize
+                //if some has, add them to the new vector
+                //decide which of those bugs with maxSize wins randomly
+                    //add the less bug to smallBugVector
+                //go back to the smallBugVectr, get their sizes and set the state to "Eaten by maxBug->getId()"
+                //check which bug has the same id as maxBug from bug_vector and update it's size
+                for(int eat3=1; eat3<bug_vectorEat.size();eat3++){
+
+                }
+            }
+
+
+
+
+
+
+            for (int tileLoop = 0; tileLoop < tiles.size(); tileLoop++) {
+                typeOfPupulationNumber = 0;
+
+                //2.1. checking which bug populates the tile
+                for (int j = 0; j < bug_vector.size(); j++) {
+
+                    if(bug_vector.at(j)->getState()=="ALIVE"){
+
+                    if (bug_vector.at(j)->getPosition().getX() == tiles.at(tileLoop).getX()
+                        && bug_vector.at(j)->getPosition().getY() == tiles.at(tileLoop).getY()
+                            ) {
+                        typeOfBugCheck = bug_vector.at(j)->getType();
+                        if (typeOfBugCheck == 'C') {
+                            typeOfPupulationNumber = 1;
+                        } else if (typeOfBugCheck == 'H') {
+                            typeOfPupulationNumber = 2;
+                        } else {
+                            typeOfPupulationNumber = 3;
+                        }
+                    }
+                    tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
+                    }
+
+                }
+                //2.2. checking the color
 
                 sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
                 sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
@@ -284,6 +328,9 @@ Tile newTile(x, y, typeOfPupulationNumber);
     return 0;
 }
 
+
+
+
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
     ifstream file(fileName);
 
@@ -313,17 +360,17 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
             int size = stoi(bugsString.at(5));
 
             //bug_vector.push_back(New Crawler (...))
-            if (bugsString.at(0) == "C") {
-                Crawler *craw = new Crawler('C', id, xValue, yValue, direction, size);
-                bug_vector.push_back(craw);
-            } else if (bugsString.at(0) == "H") {
-                int hopLength = stoi(bugsString.at(6));
-                Hopper *hopp = new Hopper('H', id, xValue, yValue, direction, size, hopLength);
-                bug_vector.push_back(hopp);
-            } else if (bugsString.at(0) == "E") {
-                El_Diagonal *eldi = new El_Diagonal('E', id, xValue, yValue, direction, size);
-                bug_vector.push_back(eldi);
-            }
+//            if (bugsString.at(0) == "C") {
+//                Crawler *craw = new Crawler('C', id, xValue, yValue, direction, size);
+//                bug_vector.push_back(craw);
+//            } else if (bugsString.at(0) == "H") {
+//                int hopLength = stoi(bugsString.at(6));
+//                Hopper *hopp = new Hopper('H', id, xValue, yValue, direction, size, hopLength);
+//                bug_vector.push_back(hopp);
+//            } else if (bugsString.at(0) == "E") {
+//                El_Diagonal *eldi = new El_Diagonal('E', id, xValue, yValue, direction, size);
+//                bug_vector.push_back(eldi);
+//            }
         }
     }
 }

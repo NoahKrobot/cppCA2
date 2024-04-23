@@ -70,7 +70,6 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
             if(bug_vector.at(bugAliveCount)->getAlive()){
                 aliveCount++;
             }
-
         }
 
         //move bugs
@@ -82,70 +81,70 @@ void Board::tapBugBoard(const vector<Bug *> &bug_vector, int size) {
         }
 
         //eat
-//        for (int j = 0; j < size; j++) {
-//            bug_vectorEat.clear();
-//
-//            int x = bug_vector.at(j)->getPosition().getX();
-//            int y = bug_vector.at(j)->getPosition().getY();
-//            int id = bug_vector.at(j)->getId();
-//
-//            bug_vectorEat.push_back(bug_vector.at(j));
-//
-//
-//            for (int k = 0; k < size; k++) {
-//                int x2 = bug_vector.at(k)->getPosition().getX();
-//                int y2 = bug_vector.at(k)->getPosition().getY();
-//                int id2 = bug_vector.at(k)->getId();
-//                int bugSize2 = bug_vector.at(k)->getSize();
-//                if (id2 != id) {
-//                    if (x == x2 && y == y2) {
-//                        bug_vectorEat.push_back(bug_vector.at(k));
-//                    }
-//                }
-//            }
-//            int maxBugSize =0;
-//            int finalSizeForBigBug = 0;
-//            //find the biggest one
-//            for(int i = 0; i< bug_vectorEat.size();i++){
-//                maxBugSize = bug_vectorEat.at(i)->getSize();
-//                for(int j=0;j<bug_vectorEat.size();j++){
-//                    if(maxBugSize < bug_vectorEat.at(j)->getSize()){
-//                        maxBugSize= bug_vectorEat.at(j)->getSize();
-//                    }
-//                }
-//            }
-//
-//            //unalive every bug that sized less than max,
-//            //but add the others to another vector
-//
-//            for(int k=0;k<bug_vectorEat.size();k++){
-//                if(bug_vectorEat.at(k)->getSize()<maxBugSize){
-//                    finalSizeForBigBug = finalSizeForBigBug+ bug_vectorEat.at(k)->getSize();
-//                    bug_vectorEat.at(k)->setAlive(false);
-//                } if(bug_vectorEat.at(k)->getSize() == maxBugSize){
-//                    bug_vectorBigEquals.push_back(bug_vectorEat.at(k));
-//                }
-//            }
-//
-//            for(int q=0; q<bug_vectorBigEquals.size();q++){
-//
-//            }
-//
-//            random_device rd;
-//            mt19937 gen(rd());
-//            uniform_int_distribution<> dist(0, bug_vectorBigEquals.size());
-//            int randomInt = dist(gen);
-//
-//            for(int randoms=0; randoms<bug_vectorBigEquals.size();randoms++){
-//                if(randomInt != randoms){
-//                    bug_vectorBigEquals.at(randoms)->setAlive(false);
-//                    finalSizeForBigBug = finalSizeForBigBug+ bug_vectorBigEquals.at(randoms)->getSize();
-//                }else{
-//                    bug_vectorBigEquals.at(randoms)->setSize(bug_vectorBigEquals.at(randoms)->getSize() +  finalSizeForBigBug);
-//                }
-//            }
-//            //add method to check every id as well
-//        }
+        for (int j = 0; j < size; j++) {
+            bug_vectorEat.clear();
+
+            int x = bug_vector.at(j)->getPosition().getX();
+            int y = bug_vector.at(j)->getPosition().getY();
+            int id = bug_vector.at(j)->getId();
+
+            bug_vectorEat.push_back(bug_vector.at(j));
+
+
+            for (int k = 0; k < size; k++) {
+                int x2 = bug_vector.at(k)->getPosition().getX();
+                int y2 = bug_vector.at(k)->getPosition().getY();
+                int id2 = bug_vector.at(k)->getId();
+                int bugSize2 = bug_vector.at(k)->getSize();
+                if (id2 != id) {
+                    if (x == x2 && y == y2) {
+                        bug_vectorEat.push_back(bug_vector.at(k));
+                    }
+                }
+            }
+            int maxBugSize =0;
+            int finalSizeForBigBug = 0;
+            //find the biggest one
+            for(int i = 0; i< bug_vectorEat.size();i++){
+                maxBugSize = bug_vectorEat.at(i)->getSize();
+                for(int j=0;j<bug_vectorEat.size();j++){
+                    if(maxBugSize < bug_vectorEat.at(j)->getSize()){
+                        maxBugSize= bug_vectorEat.at(j)->getSize();
+                    }
+                }
+            }
+
+            //unalive every bug that sized less than max,
+            //but add the others to another vector
+
+            for(int k=0;k<bug_vectorEat.size();k++){
+                if(bug_vectorEat.at(k)->getSize()<maxBugSize){
+                    finalSizeForBigBug = finalSizeForBigBug+ bug_vectorEat.at(k)->getSize();
+                    bug_vectorEat.at(k)->setAlive(false);
+                } if(bug_vectorEat.at(k)->getSize() == maxBugSize){
+                    bug_vectorBigEquals.push_back(bug_vectorEat.at(k));
+                }
+            }
+
+            for(int q=0; q<bug_vectorBigEquals.size();q++){
+
+            }
+
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<> dist(0, bug_vectorBigEquals.size());
+            int randomInt = dist(gen);
+
+            for(int randoms=0; randoms<bug_vectorBigEquals.size();randoms++){
+                if(randomInt != randoms){
+                    bug_vectorBigEquals.at(randoms)->setAlive(false);
+                    finalSizeForBigBug = finalSizeForBigBug+ bug_vectorBigEquals.at(randoms)->getSize();
+                }else{
+                    bug_vectorBigEquals.at(randoms)->setSize(bug_vectorBigEquals.at(randoms)->getSize() +  finalSizeForBigBug);
+                }
+            }
+            //add method to check every id as well
+        }
         Sleep(10000);
     }
 }

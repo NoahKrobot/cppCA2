@@ -36,10 +36,13 @@ protected:
     Pair position = Pair(0,0);
     char type;
     int size;
-    bool alive;
+    bool alive = true;
     int direction;
     list<Pair> path;
     int id;
+    string state;
+
+
 public:
     bool isWayBlocked();
     virtual void move() =0;
@@ -66,6 +69,10 @@ public:
 
 
     void setDirection(int directionVariable);
+
+    string getState() const;
+
+    void setState(string stateIn);
 };
 
 

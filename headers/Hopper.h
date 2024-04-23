@@ -20,7 +20,7 @@ public:
     void move();
 
     void updatePositionDependingOnDirection(int direction, int hop);
-    Hopper(char type, int id, int xValue, int yValue, int direction, int size, int hopLength);
+    Hopper(char type, int id, int xValue, int yValue, int direction, int size, int hopLength, string state);
 };
 
 

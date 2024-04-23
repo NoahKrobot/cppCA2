@@ -7,14 +7,14 @@
 #include <random>
 using namespace std;
 
-Crawler::Crawler(char type, int id,int x,int y, int direction, int size){
+Crawler::Crawler(char type, int id,int x,int y, int direction, int size, string stateIn){
     Pair coordinates(x,y);
     this->type = type;
     this->size = size;
-    this->alive = true;
     this->position = coordinates;
     this->direction = direction;
     this->id = id;
+    this->state = stateIn;
 }
 
 
