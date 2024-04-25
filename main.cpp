@@ -121,16 +121,54 @@ int main() {
     txt_StartGame.setPosition(200, 100);
 
 
+    sf::Text txt_dispAllBugs;
+    txt_dispAllBugs.setFont(font);
+    txt_dispAllBugs.setString("Display All Bugs");
+    txt_dispAllBugs.setCharacterSize(24);
+    txt_dispAllBugs.setFillColor(sf::Color::Red);
+    txt_dispAllBugs.setPosition(200, 150);
+
+    sf::Text txt_findByID;
+    txt_findByID.setFont(font);
+    txt_findByID.setString("Find Bug By ID");
+    txt_findByID.setCharacterSize(24);
+    txt_findByID.setFillColor(sf::Color::Red);
+    txt_findByID.setPosition(200, 200);
+
+    sf::Text txt_displayAllCells;
+    txt_displayAllCells.setFont(font);
+    txt_displayAllCells.setString("Display All Cells");
+    txt_displayAllCells.setCharacterSize(24);
+    txt_displayAllCells.setFillColor(sf::Color::Red);
+    txt_displayAllCells.setPosition(200, 250);
+
+
+
+    sf::Text txt_goBack;
+    txt_goBack.setFont(font);
+    txt_goBack.setString("<- Go Back");
+    txt_goBack.setCharacterSize(24);
+    txt_goBack.setFillColor(sf::Color::Red);
+    txt_goBack.setPosition(20, 20);
+
+
+
+
+
     sf::Text txt_Exit;
     txt_Exit.setFont(font);
     txt_Exit.setString("Exit");
     txt_Exit.setCharacterSize(24);
     txt_Exit.setFillColor(sf::Color::Red);
-    txt_Exit.setPosition(50, 550);
+    txt_Exit.setPosition(200, 300);
 
 
 
-    bool showExitButton = true;
+
+    bool showExitButton = true; //only one to be true to return home screen
+    bool showDisplayBugs = true;
+    bool showFindByID = true;
+    bool shodDisplayCells = true;
     bool wasNotYetTapped = false;
 
     for (int x = 1; x <= 9; ++x) {
@@ -144,9 +182,7 @@ int main() {
 
     while (window.isOpen()) {
 
-        //Tiles
-
-
+        //Menu
         sf::Event event;
 
         while (window.pollEvent(event)) {
@@ -160,8 +196,6 @@ int main() {
             //exit button functionallity done
             if (txt_Exit.getGlobalBounds().contains(mousePosition)) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-
-
                     // left mouse button is pressed: shoot
                     window.close();
                 }
@@ -169,17 +203,66 @@ int main() {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     showExitButton = false;
                 }
+            } else if (txt_dispAllBugs.getGlobalBounds().contains(mousePosition)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    showDisplayBugs = false;
+                    showExitButton= false;
+                }
+            }
+            else if (txt_findByID.getGlobalBounds().contains(mousePosition)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    showFindByID = false;
+                    showExitButton= false;
+                }
+            }
+
+            else if (txt_displayAllCells.getGlobalBounds().contains(mousePosition)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    shodDisplayCells = false;
+                    showExitButton= false;
+                }
+            }
+
+            else if (txt_goBack.getGlobalBounds().contains(mousePosition)) {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                    showDisplayBugs = true;
+                    showFindByID = true;
+                    shodDisplayCells = true;
+                    showExitButton= true;
+                }
             }
         }
 
         window.clear();
-        window.draw(txt_Exit);
 
         //start game screen clear
         if (showExitButton) {
+            window.draw(txt_Exit);
             window.draw(txt_StartGame);
-        } else {
+            window.draw(txt_dispAllBugs);
+            window.draw(txt_findByID);
+            window.draw(txt_displayAllCells);
+        } else if(!showDisplayBugs){
+            window.clear();
+            window.draw(txt_dispAllBugs);
+            window.draw(txt_goBack);
+        } else if(!showFindByID){
+            window.clear();
+            window.draw(txt_findByID);
+            window.draw(txt_goBack);
+        }
+        else if(!shodDisplayCells){
+            window.clear();
+            window.draw(txt_displayAllCells);
+            window.draw(txt_goBack);
+        }
 
+
+
+
+
+
+        else if(!showExitButton) {
 
             //draw a board
             //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
@@ -195,7 +278,6 @@ int main() {
                 moveBugsAndDisplayThem(window, typeOfPupulationNumber, bug_vector, tileSize, padding, tiles,
                                        typeOfBugCheck, tileLoop);
             }
-
 
             //eating the bug
             int tileX = 0;
