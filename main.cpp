@@ -67,6 +67,14 @@ struct Tile {
 };
 
 
+void moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vector<Bug *> bug_vector, int tileSize,
+                       int padding, vector<Tile> tiles, char typeOfBugCheck, int tileLoop);
+
+
+void eatBugsAndDisplayThat(vector<Bug*> bug_vectorEat, vector<Bug*> bug_vectorBigEquals, vector<Bug*> bug_vectorSmallBugs, int tileX,
+                           vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector);
+
+
 int main() {
 
 
@@ -80,13 +88,12 @@ int main() {
 
     vector<Bug *> bug_vector;
 
-    Crawler *craw = new Crawler('C', 1, 5, 5, 1, 3, "ALIVE");
+    Crawler *craw = new Crawler('C', 1, 4, 4, 1, 3, "ALIVE");
     bug_vector.push_back(craw);
-    Hopper *hopp = new Hopper('H', 2, 5, 5, 4, 2, 2, "ALIVE");
+    Hopper *hopp = new Hopper('H', 2, 3, 6, 4, 2, 2, "ALIVE");
     bug_vector.push_back(hopp);
     El_Diagonal *eldi = new El_Diagonal('E', 3, 5, 5, 5, 3, "ALIVE");
     bug_vector.push_back(eldi);
-
     Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
     bug_vector.push_back(craw2);
 
@@ -173,60 +180,12 @@ int main() {
             int padding = 5;
 
 
-
             //1. moving a bug
 
 
-
-
-
             for (int tileLoop = 0; tileLoop < tiles.size(); tileLoop++) {
-                typeOfPupulationNumber = 0;
-
-                //2.1. checking which bug populates the tile
-                for (int j = 0; j < bug_vector.size(); j++) {
-
-                    if (bug_vector.at(j)->getState() == "ALIVE") {
-
-                        if (bug_vector.at(j)->getPosition().getX() == tiles.at(tileLoop).getX()
-                            && bug_vector.at(j)->getPosition().getY() == tiles.at(tileLoop).getY()
-                                ) {
-                            typeOfBugCheck = bug_vector.at(j)->getType();
-                            if (typeOfBugCheck == 'C') {
-                                typeOfPupulationNumber = 1;
-                            } else if (typeOfBugCheck == 'H') {
-                                typeOfPupulationNumber = 2;
-                            } else {
-                                typeOfPupulationNumber = 3;
-                            }
-                        }
-                        tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
-                    } else {
-                        Pair newPos = *new Pair(20, 20);
-                        bug_vector.at(j)->setPosition(newPos);
-
-                    }
-
-
-                }
-                //2.2. checking the color
-
-                sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
-                sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
-                singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding),
-                                            tiles.at(tileLoop).getY() * (tileSize + padding));
-
-
-                if (tiles.at(tileLoop).getPopulated() == 0) {
-                    singleTileShape.setFillColor(sf::Color::White);
-                } else if (tiles.at(tileLoop).getPopulated() == 1) {
-                    singleTileShape.setFillColor(sf::Color::Red);
-                } else if (tiles.at(tileLoop).getPopulated() == 2) {
-                    singleTileShape.setFillColor(sf::Color::Blue);
-                } else if (tiles.at(tileLoop).getPopulated() == 3) {
-                    singleTileShape.setFillColor(sf::Color::Cyan);
-                }
-                window.draw(singleTileShape);
+                moveBugsAndDisplayThem(window, typeOfPupulationNumber, bug_vector, tileSize, padding, tiles,
+                                       typeOfBugCheck, tileLoop);
             }
 
 
@@ -235,89 +194,14 @@ int main() {
             int tileY = 0;
 
             for (int tileC = 0; tileC < tiles.size(); tileC++) {
-                bug_vectorBigEquals.clear();
-                bug_vectorEat.clear();
-                bug_vectorSmallBugs.clear();
+                eatBugsAndDisplayThat(
 
-                tileX = tiles.at(tileC).getX();
-                tileY = tiles.at(tileC).getY();
-
-                for (int bugC = 0; bugC < bug_vector.size(); bugC++) {
-                    if (bug_vector.at(bugC)->getPosition().getX() == tileX
-                        && bug_vector.at(bugC)->getPosition().getY() == tileY
-                            )
-                        bug_vectorEat.push_back(bug_vector.at(bugC));
-                }
-
-                if (bug_vectorEat.size() > 1) {
-
-                    int maxSize = bug_vectorEat.at(0)->getSize();
-                    int maxID = bug_vectorEat.at(0)->getId();
-
-                    for (int eat1 = 1; eat1 < bug_vectorEat.size(); eat1++) {
-                        //push smaller bug to new smaller vector
-                        if (maxSize > bug_vectorEat.at(eat1)->getSize()) {
-                            bug_vectorSmallBugs.push_back(bug_vectorEat.at(eat1));
-                            //push previous big which is now smaller to small vector
-                        } else if (maxSize < bug_vectorEat.at(eat1)->getSize()) {
-                            for (int idc = 0; idc < bug_vectorEat.size(); idc++) {
-                                if (maxID == bug_vectorEat.at(idc)->getId()) {
-                                    bug_vectorSmallBugs.push_back(bug_vectorEat.at(idc));
-                                }
-                            }
-                            maxID = bug_vectorEat.at(eat1)->getId();
-                            maxSize = bug_vectorEat.at(eat1)->getSize();
-                        }
-                        cout<<"maxID "<<maxID<<endl;
-                    }
+                       bug_vectorEat, bug_vectorBigEquals, bug_vectorSmallBugs,  tileX,  tiles,
+                        tileC,  tileY, bug_vector
 
 
 
-                    //push equal vectors in new array
-                    for (int eat2 = 0; eat2 < bug_vectorEat.size(); eat2++) {
-                        if (maxSize == bug_vectorEat.at(eat2)->getSize()) {
-                            bug_vectorBigEquals.push_back(bug_vectorEat.at(eat2));
-                        }
-                    }
-
-                    int winnerSize = maxSize;
-                    int winnerID = maxID;
-
-                    if (bug_vectorEat.size() > 1) {
-
-                        for (int equalsRand = 0; equalsRand < bug_vectorBigEquals.size(); equalsRand++) {
-                            cout<<"bug_vectorBigEquals"<<endl;
-                            cout<<bug_vectorBigEquals.at(equalsRand)->getId()<<endl;
-                        }
-
-                        random_device equalRand;
-                        mt19937 gen(equalRand());
-                        uniform_int_distribution<> dist(0, bug_vectorBigEquals.size() - 1);
-                        int randomEqualBugIndex = dist(gen);
-
-                        for(int big=0;big<bug_vectorBigEquals.size();big++){
-                            if(big != randomEqualBugIndex){
-                                bug_vectorSmallBugs.push_back(bug_vectorBigEquals.at(big));
-                            }else{
-                                winnerID= bug_vectorBigEquals.at(big)->getId();
-                            }
-                        }
-
-                    }
-
-
-
-
-                    for (int sma = 0; sma < bug_vectorSmallBugs.size(); sma++) {
-                        string stateString;
-                        stateString += "Eaten by ";
-                        stateString += to_string(winnerID);
-                        bug_vectorSmallBugs.at(sma)->setState(stateString);
-                        cout << "state: " << bug_vectorSmallBugs.at(sma)->getState();
-                    }
-
-
-                }
+                        );
             }
 
 
@@ -430,24 +314,166 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
     }
 }
 
-void initializeBugBoard() {
-    cout << "Initializing Bug Board..." << endl;
+
+void eatBugsAndDisplayThat(vector<Bug*> bug_vectorEat, vector<Bug*> bug_vectorBigEquals, vector<Bug*> bug_vectorSmallBugs, int tileX,
+vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector
+){
+
+    bug_vectorBigEquals.clear();
+    bug_vectorEat.clear();
+    bug_vectorSmallBugs.clear();
+
+    tileX = tiles.at(tileC).getX();
+    tileY = tiles.at(tileC).getY();
+
+    for (int bugC = 0; bugC < bug_vector.size(); bugC++) {
+        if (bug_vector.at(bugC)->getPosition().getX() == tileX
+            && bug_vector.at(bugC)->getPosition().getY() == tileY
+                )
+            bug_vectorEat.push_back(bug_vector.at(bugC));
+    }
+
+    if (bug_vectorEat.size() > 1) {
+
+        int maxSize = bug_vectorEat.at(0)->getSize();
+        int maxID = bug_vectorEat.at(0)->getId();
+
+        for (int eat1 = 1; eat1 < bug_vectorEat.size(); eat1++) {
+            //push smaller bug to new smaller vector
+            if (maxSize > bug_vectorEat.at(eat1)->getSize()) {
+                bug_vectorSmallBugs.push_back(bug_vectorEat.at(eat1));
+                //push previous big which is now smaller to small vector
+            } else if (maxSize < bug_vectorEat.at(eat1)->getSize()) {
+                for (int idc = 0; idc < bug_vectorEat.size(); idc++) {
+                    if (maxID == bug_vectorEat.at(idc)->getId()) {
+                        bug_vectorSmallBugs.push_back(bug_vectorEat.at(idc));
+                    }
+                }
+                maxID = bug_vectorEat.at(eat1)->getId();
+                maxSize = bug_vectorEat.at(eat1)->getSize();
+            }
+            cout << "maxID " << maxID << endl;
+        }
+
+
+        //push equal vectors in new array
+        for (int eat2 = 0; eat2 < bug_vectorEat.size(); eat2++) {
+            if (maxSize == bug_vectorEat.at(eat2)->getSize()) {
+                bug_vectorBigEquals.push_back(bug_vectorEat.at(eat2));
+            }
+        }
+
+        int winnerSize = maxSize;
+        int winnerID = maxID;
+
+        if (bug_vectorEat.size() > 1) {
+
+            for (int equalsRand = 0; equalsRand < bug_vectorBigEquals.size(); equalsRand++) {
+                cout << "bug_vectorBigEquals" << endl;
+                cout << bug_vectorBigEquals.at(equalsRand)->getId() << endl;
+            }
+
+            random_device equalRand;
+            mt19937 gen(equalRand());
+            uniform_int_distribution<> dist(0, bug_vectorBigEquals.size() - 1);
+            int randomEqualBugIndex = dist(gen);
+
+            for (int big = 0; big < bug_vectorBigEquals.size(); big++) {
+                if (big != randomEqualBugIndex) {
+                    bug_vectorSmallBugs.push_back(bug_vectorBigEquals.at(big));
+                } else {
+                    winnerID = bug_vectorBigEquals.at(big)->getId();
+                }
+            }
+        }
+
+        for (int sma = 0; sma < bug_vectorSmallBugs.size(); sma++) {
+            string stateString;
+            stateString += "Eaten by ";
+            stateString += to_string(winnerID);
+            bug_vectorSmallBugs.at(sma)->setState(stateString);
+            cout << "state: " << bug_vectorSmallBugs.at(sma)->getState();
+        }
+    }
+}
+
+void moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vector<Bug *> bug_vector, int tileSize,
+                       int padding, vector<Tile> tiles, char typeOfBugCheck, int tileLoop) {
+
+
+    typeOfPupulationNumber = 0;
+
+    //2.1. checking which bug populates the tile
+    for (int j = 0; j < bug_vector.size(); j++) {
+
+        if (bug_vector.at(j)->getState() == "ALIVE") {
+
+            if (bug_vector.at(j)->getPosition().getX() == tiles.at(tileLoop).getX()
+                && bug_vector.at(j)->getPosition().getY() == tiles.at(tileLoop).getY()
+                    ) {
+                typeOfBugCheck = bug_vector.at(j)->getType();
+                if (typeOfBugCheck == 'C') {
+                    typeOfPupulationNumber = 1;
+                } else if (typeOfBugCheck == 'H') {
+                    typeOfPupulationNumber = 2;
+                } else {
+                    typeOfPupulationNumber = 3;
+                }
+            }
+            tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
+        } else {
+            Pair newPos = *new Pair(20, 20);
+            bug_vector.at(j)->setPosition(newPos);
+
+        }
+
+
+    }
+    //2.2. checking the color
+
+    sf::RectangleShape tileShape(sf::Vector2f(tileSize, tileSize));
+    sf::RectangleShape singleTileShape(sf::Vector2f(50, 50));
+    singleTileShape.setPosition(tiles.at(tileLoop).getX() * (tileSize + padding),
+                                tiles.at(tileLoop).getY() * (tileSize + padding));
+
+
+    if (tiles.at(tileLoop).getPopulated() == 0) {
+        singleTileShape.setFillColor(sf::Color::White);
+    } else if (tiles.at(tileLoop).getPopulated() == 1) {
+        singleTileShape.setFillColor(sf::Color::Red);
+
+        sf::Texture texture;
+        texture.loadFromFile("../sprites/buggy.jpg");
+        sf::Sprite Sprite;
+        Sprite.setTexture(texture);
+        singleTileShape.setTexture(reinterpret_cast<const sf::Texture *>(&Sprite));
+
+    } else if (tiles.at(tileLoop).getPopulated() == 2) {
+        singleTileShape.setFillColor(sf::Color::Blue);
+    } else if (tiles.at(tileLoop).getPopulated() == 3) {
+        singleTileShape.setFillColor(sf::Color::Cyan);
+    }
+    window.draw(singleTileShape);
+
 }
 
 
-void displayLifeHistory() {
-    cout << "Displaying Life History of all Bugs..." << endl;
-}
 
-void displayAllCells() {
-    cout << "Displaying all Cells listing their Bugs..." << endl;
-}
 
-void runSimulation() {
-    cout << "Running simulation..." << endl;
-}
 
-void exitProgram() {
-    cout << "Exiting program..." << endl;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

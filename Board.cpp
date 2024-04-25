@@ -210,6 +210,8 @@ string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size) {
             bugStringLine += to_string(it->getY());
             bugStringLine += "), ";
         }
+        bugStringLine += bug_vector.at(i)->getState();
+
 
     }
     return bugStringLine;
