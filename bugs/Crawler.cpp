@@ -75,83 +75,13 @@ void Crawler::move() {
                 int randomInt = dist(gen);
                 cout<<"random number for west: "<<randomInt<<endl;
                 this->setDirection(randomInt);
-//                updatePositionDependingOnDirection(randomInt);
             }
             break;
     }
 
-//
-//        case 1: //north
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(1);
-//            }else{
-//               uniform_int_distribution<> dist(2, 4);
-//               int randomInt = dist(gen);
-//                this->setDirection(randomInt);
-//
-//               updatePositionDependingOnDirection(randomInt);
-//            }
-//            break;
-//        case 2: //east
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(1);
-//            }else{
-//                int numbers[] = {1, 3, 4};
-//                uniform_int_distribution<> dist(0, 2);
-//                int randomIndex = dist(gen);
-//                int randomNumber = numbers[randomIndex];
-//                this->setDirection(randomNumber);
-//
-//                updatePositionDependingOnDirection(randomNumber);
-//
-//            }
-//            break;
-//        case 3: //south
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(3);
-//            }else{
-//
-//                int numbers[] = {1, 2, 4};
-//                uniform_int_distribution<> dist(0, 2);
-//                int randomIndex = dist(gen);
-//                int randomNumber = numbers[randomIndex];
-//                this->setDirection(randomNumber);
-//
-//                updatePositionDependingOnDirection(randomNumber);
-//
-//            }
-//            break;
-//        case 4: //west
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(4);
-//            }else{
-//                uniform_int_distribution<> dist(1, 3);
-//                int randomInt = dist(gen);
-//                this->setDirection(randomInt);
-//                updatePositionDependingOnDirection(randomInt);
-//            }
-//            break;
-//    }
-
     path.push_back(position);
 }
 
-//void Crawler::updatePositionDependingOnDirection(int direction){
-//    switch (direction) {
-//        case 1: //north
-//            this->position.setY(position.getY() - 1);
-//            break;
-//        case 2: //east
-//            this->position.setX(position.getX() + 1);
-//            break;
-//        case 3: //south
-//            this->position.setY(position.getY() + 1);
-//            break;
-//        case 4: //west
-//            this->position.setX(position.getX() - 1);
-//            break;
-//    }
-//};
 
 
 string Crawler::getBugDetails() {

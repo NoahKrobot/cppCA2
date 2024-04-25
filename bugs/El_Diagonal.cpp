@@ -15,16 +15,15 @@ using namespace std;
 
 El_Diagonal::El_Diagonal(char type, int id,int x,int y, int direction, int size, string stateIn){
     Pair coordinates(x,y);
+    this->type = type;
     this->size = size;
     this->position = coordinates;
     this->direction = direction;
     this->id = id;
-    this->state= stateIn;
+    this->state = stateIn;
 }
 
 void El_Diagonal::move() {
-
-
 
     random_device rd;
     mt19937 gen(rd());
@@ -79,60 +78,8 @@ void El_Diagonal::move() {
             }
             break;
     }
+    path.push_back(position);
 
-
-
-
-
-
-
-//    random_device rd;
-//    mt19937 gen(rd());
-//    switch (direction) {
-//        case 5: //north
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(5);
-//            }else{
-//                uniform_int_distribution<> dist(6, 8);
-//                int randomInt = dist(gen);
-//                updatePositionDependingOnDirection(randomInt);
-//            }
-//            break;
-//        case 6: //east
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(6);
-//            }else{
-//
-//                int numbers[] = {5, 7, 8};
-//                uniform_int_distribution<> dist(0, 2);
-//                int randomIndex = dist(gen);
-//                int randomNumber = numbers[randomIndex];
-//                updatePositionDependingOnDirection(randomNumber);
-//            }
-//            break;
-//        case 7: //south
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(7);
-//            }else{
-//
-//                int numbers[] = {5, 6, 8};
-//                uniform_int_distribution<> dist(0, 2);
-//                int randomIndex = dist(gen);
-//                int randomNumber = numbers[randomIndex];
-//                updatePositionDependingOnDirection(randomNumber);
-//            }
-//            break;
-//        case 8: //west
-//            if(!isWayBlocked()){
-//                updatePositionDependingOnDirection(8);
-//            }else{
-//                uniform_int_distribution<> dist(5, 7);
-//                int randomInt = dist(gen);
-//                updatePositionDependingOnDirection(randomInt);
-//            }
-//            break;
-//    }
-//    path.push_back(position);
 }
 
 
@@ -161,7 +108,7 @@ void El_Diagonal::updatePositionDependingOnDirection(int direction){
 string El_Diagonal::getBugDetails() {
     string detailsToPush;
 
-    detailsToPush = to_string(id) + " El Diagonal (" + to_string(position.getX()) + "," + to_string(position.getY()) +
+    detailsToPush = to_string(id) + " El Diagonal(" + to_string(position.getX()) + "," + to_string(position.getY()) +
                     ") " + to_string(size) +" "+ to_string(direction);
     if (alive){
         detailsToPush += " ALIVE";
@@ -170,6 +117,14 @@ string El_Diagonal::getBugDetails() {
     }
     return detailsToPush;
 }
+
+
+
+
+
+
+
+
 
 void El_Diagonal::displayEl_DiagonalDetails() {
     string details = getBugDetails();

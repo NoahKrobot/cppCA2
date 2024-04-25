@@ -87,12 +87,16 @@ int main() {
     vector<Bug *> bug_vectorSmallBugs;
     vector<Bug *> bug_vector;
 
+
     Crawler *craw = new Crawler('C', 1, 4, 4, 1, 3, "ALIVE");
     bug_vector.push_back(craw);
+
+    El_Diagonal *pElDiagonal = new El_Diagonal('D', 3, 1, 5, 5, 3, "ALIVE");
+    bug_vector.push_back(pElDiagonal);
+
     Hopper *hopp = new Hopper('H', 2, 3, 6, 4, 2, 2, "ALIVE");
     bug_vector.push_back(hopp);
-    El_Diagonal *eldi = new El_Diagonal('E', 3, 5, 5, 5, 3, "ALIVE");
-    bug_vector.push_back(eldi);
+
     Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
     bug_vector.push_back(craw2);
 
@@ -149,9 +153,7 @@ int main() {
             if (event.type == sf::Event::Closed){
                 (new  Board())->exitProgram(bug_vector, bug_vector.size());
                 window.close();
-
             }
-
 
             sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
@@ -168,8 +170,6 @@ int main() {
                     showExitButton = false;
                 }
             }
-
-
         }
 
         window.clear();

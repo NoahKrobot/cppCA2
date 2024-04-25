@@ -159,7 +159,7 @@ void Board::displayLifeHistory(const vector<Bug *> &bug_vector, int size) {
 
 //Tutorial: getting date and time: https://www.tutorialspoint.com/cplusplus/cpp_date_time.htm
 void Board::exitProgram(const vector<Bug *> &bug_vector, int size) {
-    string toPasteInFile = historyMainFunction(bug_vector, size);
+    string toPasteInFile = historyMainFunction(bug_vector, bug_vector.size());
     time_t now = time(0);
     tm *ltm = localtime(&now);
     string filename = "../bugs_life_history_" + to_string(ltm->tm_mday)
@@ -195,9 +195,10 @@ string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size) {
 
         if (bug_vector.at(i)->getType() == 'C') {
             bugStringLine += " Crawler Path:";
-        } else if (bug_vector.at(i)->getType() == 'H') {
+        }
+        else if (bug_vector.at(i)->getType() == 'H') {
             bugStringLine += " Hopper Path:";
-        } else {
+        } else if (bug_vector.at(i)->getType() == 'D') {
             bugStringLine += " El Diagonal Path:";
         }
 
@@ -208,6 +209,7 @@ string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size) {
             bugStringLine += to_string(it->getY());
             bugStringLine += "), ";
         }
+
         bugStringLine += bug_vector.at(i)->getState();
 
 
