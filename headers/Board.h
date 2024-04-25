@@ -21,6 +21,7 @@ public:
     void tapBugBoard(const vector<Bug *> &bug_vector, int size);
 
     void displayAllBugs(sf::RenderWindow &window, const vector<Bug *> &bug_vector, int size);
+
 };
 
 

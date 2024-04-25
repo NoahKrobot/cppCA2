@@ -75,7 +75,7 @@ void eatBugsAndDisplayThat(vector<Bug*> bug_vectorEat, vector<Bug*> bug_vectorBi
                            vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector);
 
 
-
+void populateDisplayID(vector<sf::Text> &idDisplays, vector<Bug *> bug_vector);
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
@@ -99,7 +99,8 @@ int main() {
 
     Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
     bug_vector.push_back(craw2);
-
+    Crawler *craw3 = new Crawler('C', 5, 8, 7, 1, 3, "ALIVE");
+    bug_vector.push_back(craw3);
 
 
     //tiles vector
@@ -119,7 +120,6 @@ int main() {
     txt_StartGame.setCharacterSize(24);
     txt_StartGame.setFillColor(sf::Color::Red);
     txt_StartGame.setPosition(200, 100);
-
 
     sf::Text txt_dispAllBugs;
     txt_dispAllBugs.setFont(font);
@@ -142,8 +142,6 @@ int main() {
     txt_displayAllCells.setFillColor(sf::Color::Red);
     txt_displayAllCells.setPosition(200, 250);
 
-
-
     sf::Text txt_goBack;
     txt_goBack.setFont(font);
     txt_goBack.setString("<- Go Back");
@@ -151,19 +149,12 @@ int main() {
     txt_goBack.setFillColor(sf::Color::Red);
     txt_goBack.setPosition(20, 20);
 
-
-
-
-
     sf::Text txt_Exit;
     txt_Exit.setFont(font);
     txt_Exit.setString("Exit");
     txt_Exit.setCharacterSize(24);
     txt_Exit.setFillColor(sf::Color::Red);
     txt_Exit.setPosition(200, 300);
-
-
-
 
     bool showExitButton = true; //only one to be true to return home screen
     bool showDisplayBugs = true;
@@ -178,6 +169,13 @@ int main() {
             tiles.push_back(newTile);
         }
     }
+
+    vector<sf::Text> idDisplays;
+    populateDisplayID(idDisplays, bug_vector);
+
+
+
+
 
 
     while (window.isOpen()) {
@@ -231,6 +229,18 @@ int main() {
                     showExitButton= true;
                 }
             }
+
+            for (size_t i = 0; i < idDisplays.size(); i++) {
+                if (idDisplays[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition))) {
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                        for (size_t j = 0; j < idDisplays.size(); j++) {
+                            if (j != i) {
+                                idDisplays[j].setString("");
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         window.clear();
@@ -247,22 +257,22 @@ int main() {
             window.draw(txt_goBack);
             (new Board())->displayAllBugs(window, bug_vector, bug_vector.size());
 
-
         } else if(!showFindByID){
             window.clear();
             window.draw(txt_findByID);
             window.draw(txt_goBack);
+
+            for (size_t drawVecotr = 0; drawVecotr < idDisplays.size(); drawVecotr++) {
+                if (!idDisplays.at(drawVecotr).getString().isEmpty()) {
+                    window.draw(idDisplays.at(drawVecotr));
+                }
+            }
         }
         else if(!shodDisplayCells){
             window.clear();
             window.draw(txt_displayAllCells);
             window.draw(txt_goBack);
         }
-
-
-
-
-
 
         else if(!showExitButton) {
 
@@ -358,7 +368,23 @@ int main() {
 
 
 
+void populateDisplayID(vector<sf::Text> &idDisplays, vector<Bug*> bug_vector ){
+    for (int idLoop = 0; idLoop < bug_vector.size(); idLoop++) {
+        std::string idMenu = std::to_string(bug_vector.at(idLoop)->getId());
+        sf::Text idDisplay;
 
+        idDisplay.setFont(font);
+        idDisplay.setCharacterSize(20);
+        idDisplay.setFillColor(sf::Color::White);
+        idDisplay.setString(idMenu);
+        if(idLoop%2==0){
+            idDisplay.setPosition(200, 50+ (idLoop * 100 ));
+        }else{
+            idDisplay.setPosition(400, 50+ ((idLoop-1) * 100 ));
+        }
+        idDisplays.push_back(idDisplay);
+    }
+}
 
 
 

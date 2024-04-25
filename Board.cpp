@@ -42,13 +42,24 @@ void Board::displayAllBugs(sf::RenderWindow& window, const vector<Bug*>& bug_vec
         }
         window.draw(text);
     }
-
 }
 
 
 
 
 void Board::findBugById(const vector<Bug *> &bug_vector, int size) {
+
+    sf::Font font;
+    if (!font.loadFromFile("C:/Users/noah3/OneDrive/CAs/cppCA2/Roboto-Medium.ttf")) {
+        std::cerr << "Error loading font\n";
+    }
+
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(20);
+    text.setFillColor(sf::Color::White);
+
+
     cout << "Finding a Bug by ID..." << endl;
     cout << "Enter bug id to find: ";
     int userID;
@@ -56,24 +67,39 @@ void Board::findBugById(const vector<Bug *> &bug_vector, int size) {
     bool idFound = false;
     cout << endl;
 
+    string singleBugText ="";
+
     for (int i = 0; i < size; i++) {
         int id = bug_vector.at(i)->getId();
         if (id == userID) {
-            cout << "id: " << bug_vector.at(i)->getId() << endl;
-            cout << "direction: " << bug_vector.at(i)->getDirection() << endl;
-            cout << "X position: " << bug_vector.at(i)->getPosition().getX() << endl;
-            cout << "Y position: " << bug_vector.at(i)->getPosition().getY() << endl;
-            cout << "alive: " << bug_vector.at(i)->getAlive() << endl;
-            cout << "size: " << bug_vector.at(i)->getSize() << endl;
+
+            singleBugText +="id: ";
+            singleBugText +=bug_vector.at(i)->getId();
+            singleBugText +="direction: ";
+            singleBugText +=bug_vector.at(i)->getDirection();
+            singleBugText +="X position: ";
+            singleBugText +=bug_vector.at(i)->getPosition().getX();
+            singleBugText +="Y position: ";
+            singleBugText +=bug_vector.at(i)->getPosition().getY();
+            singleBugText +="alive: ";
+            singleBugText +=bug_vector.at(i)->getAlive();
+            singleBugText +="size: ";
+            singleBugText +=bug_vector.at(i)->getSize();
+
+            text.setString(singleBugText);
             idFound = true;
         }
     }
 
     if (!idFound) {
-        cout << "Bug not found." << endl;
+//        cout << "Bug not found." << endl;
+        text.setString("Bug not found.");
+
     }
-    cout << endl;
-    cout << endl;
+    text.setPosition(200, 400);
+//
+//    cout << endl;
+//    cout << endl;
 }
 
 
