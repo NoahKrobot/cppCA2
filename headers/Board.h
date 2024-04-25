@@ -6,12 +6,12 @@
 #define CPPCA2_BOARD_H
 
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include "Bug.h"
 
 class Board {
 
 public:
-    void displayAllBugs(const vector<Bug *> &bug_vector, int size);
     void findBugById(const vector<Bug *> &bug_vector, int size);
     void displayLifeHistory(const vector<Bug *> &bug_vector, int size);
     void exitProgram(const vector<Bug *> &bug_vector, int size);
@@ -19,6 +19,8 @@ public:
 
 
     void tapBugBoard(const vector<Bug *> &bug_vector, int size);
+
+    void displayAllBugs(sf::RenderWindow &window, const vector<Bug *> &bug_vector, int size);
 };
 
 

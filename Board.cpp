@@ -9,25 +9,44 @@
 #include "headers/Bug.h"
 #include <random>
 #include <synchapi.h>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 
+void Board::displayAllBugs(sf::RenderWindow& window, const vector<Bug*>& bug_vector, int size) {
+    sf::Font font;
+    if (!font.loadFromFile("C:/Users/noah3/OneDrive/CAs/cppCA2/Roboto-Medium.ttf")) {
+        std::cerr << "Error loading font\n";
+    }
 
-
-void Board::displayAllBugs(const vector<Bug *> &bug_vector, int size) {
-    cout << "Displaying all Bugs..." << endl;
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(20);
+    text.setFillColor(sf::Color::White);
 
     for (int i = 0; i < size; i++) {
-        cout << "id: " << bug_vector.at(i)->getId() << endl;
-        cout << "direction: " << bug_vector.at(i)->getDirection() << endl;
-        cout << "X position: " << bug_vector.at(i)->getPosition().getX() << endl;
-        cout << "Y position: " << bug_vector.at(i)->getPosition().getY() << endl;
-        cout << "alive: " << bug_vector.at(i)->getAlive() << endl;
-        cout << "size: " << bug_vector.at(i)->getSize() << endl;
-        cout << "state: " << bug_vector.at(i)->getState() << endl;
-        cout << endl;
-        cout << endl;
+        string bug_info = "id: " + to_string(bug_vector.at(i)->getId()) + "\n"
+                          + "direction: " + to_string(bug_vector.at(i)->getDirection()) + "\n"
+                          + "X position: " + to_string(bug_vector.at(i)->getPosition().getX()) + "\n"
+                          + "Y position: " + to_string(bug_vector.at(i)->getPosition().getY()) + "\n"
+                          + "alive: " + (bug_vector.at(i)->getAlive() ? "true" : "false") + "\n"
+                          + "size: " + to_string(bug_vector.at(i)->getSize()) + "\n";
+
+        text.setString(bug_info);
+
+        if(i%2==0){
+            text.setPosition(200, 50+ (i * 100 ));
+        }else{
+            text.setPosition(400, 50+ ((i-1) * 100 ));
+        }
+        window.draw(text);
     }
+
 }
+
+
+
 
 void Board::findBugById(const vector<Bug *> &bug_vector, int size) {
     cout << "Finding a Bug by ID..." << endl;

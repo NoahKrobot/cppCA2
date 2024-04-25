@@ -244,8 +244,10 @@ int main() {
             window.draw(txt_displayAllCells);
         } else if(!showDisplayBugs){
             window.clear();
-            window.draw(txt_dispAllBugs);
             window.draw(txt_goBack);
+            (new Board())->displayAllBugs(window, bug_vector, bug_vector.size());
+
+
         } else if(!showFindByID){
             window.clear();
             window.draw(txt_findByID);
@@ -272,7 +274,6 @@ int main() {
 
 
             //1. moving a bug
-
 
             for (int tileLoop = 0; tileLoop < tiles.size(); tileLoop++) {
                 moveBugsAndDisplayThem(window, typeOfPupulationNumber, bug_vector, tileSize, padding, tiles,
