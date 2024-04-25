@@ -75,9 +75,9 @@ void eatBugsAndDisplayThat(vector<Bug*> bug_vectorEat, vector<Bug*> bug_vectorBi
                            vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector);
 
 
+
+
 int main() {
-
-
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
 
 
@@ -85,7 +85,6 @@ int main() {
     vector<Bug *> bug_vectorEat;
     vector<Bug *> bug_vectorBigEquals;
     vector<Bug *> bug_vectorSmallBugs;
-
     vector<Bug *> bug_vector;
 
     Crawler *craw = new Crawler('C', 1, 4, 4, 1, 3, "ALIVE");
@@ -97,18 +96,18 @@ int main() {
     Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
     bug_vector.push_back(craw2);
 
+
+
     //tiles vector
     vector<Tile> tiles;
     int typeOfPupulationNumber = 0;
     char typeOfBugCheck = ' ';
-
 
     sf::Font font;
     if (!font.loadFromFile("C:/Users/noah3/OneDrive/CAs/cppCA2/Roboto-Medium.ttf")) {
         std::cerr << "Error loading font\n";
         return 1;
     }
-
 
     sf::Text txt_StartGame;
     txt_StartGame.setFont(font);
@@ -117,12 +116,15 @@ int main() {
     txt_StartGame.setFillColor(sf::Color::Red);
     txt_StartGame.setPosition(200, 100);
 
+
     sf::Text txt_Exit;
     txt_Exit.setFont(font);
     txt_Exit.setString("Exit");
     txt_Exit.setCharacterSize(24);
     txt_Exit.setFillColor(sf::Color::Red);
-    txt_Exit.setPosition(200, 150);
+    txt_Exit.setPosition(50, 550);
+
+
 
     bool showExitButton = true;
     bool wasNotYetTapped = false;
@@ -144,14 +146,20 @@ int main() {
         sf::Event event;
 
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
+                (new  Board())->exitProgram(bug_vector, bug_vector.size());
                 window.close();
+
+            }
+
 
             sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
             //exit button functionallity done
             if (txt_Exit.getGlobalBounds().contains(mousePosition)) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+
+
                     // left mouse button is pressed: shoot
                     window.close();
                 }
@@ -165,15 +173,15 @@ int main() {
         }
 
         window.clear();
+        window.draw(txt_Exit);
 
         //start game screen clear
         if (showExitButton) {
-            window.draw(txt_Exit);
             window.draw(txt_StartGame);
         } else {
+
+
             //draw a board
-
-
             //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
             wasNotYetTapped = true;
             int tileSize = 50;
@@ -197,14 +205,8 @@ int main() {
                 eatBugsAndDisplayThat(
 
                        bug_vectorEat, bug_vectorBigEquals, bug_vectorSmallBugs,  tileX,  tiles,
-                        tileC,  tileY, bug_vector
-
-
-
-                        );
+                        tileC,  tileY, bug_vector);
             }
-
-
             window.display();
 
             for (int i = 0; i < bug_vector.size(); i++) {
@@ -214,7 +216,6 @@ int main() {
             }
 
             Sleep(1000);
-
 
         }
         window.display();
@@ -268,6 +269,27 @@ int main() {
 //    } while (choice != 8);
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {

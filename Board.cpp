@@ -182,9 +182,7 @@ void Board::exitProgram(const vector<Bug *> &bug_vector, int size) {
     } else {
         cout << "Error creating history file" << endl;
     }
-//    else {
-//       cout<<"error creating history file"<<endl;
-//    }
+
 }
 
 string Board::historyMainFunction(const vector<Bug *> &bug_vector, int size) {
