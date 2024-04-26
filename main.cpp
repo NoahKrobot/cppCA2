@@ -67,13 +67,15 @@ struct Tile {
 };
 
 
-void moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vector<Bug *> bug_vector, int tileSize,
+void
+moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vector<Bug *> bug_vector, int tileSize,
                        int padding, vector<Tile> tiles, char typeOfBugCheck, int tileLoop);
 
 
-void eatBugsAndDisplayThat(vector<Bug*> bug_vectorEat, vector<Bug*> bug_vectorBigEquals, vector<Bug*> bug_vectorSmallBugs, int tileX,
-                           vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector);
-
+void
+eatBugsAndDisplayThat(vector<Bug *> bug_vectorEat, vector<Bug *> bug_vectorBigEquals, vector<Bug *> bug_vectorSmallBugs,
+                      int tileX,
+                      vector<Tile> tiles, int tileC, int tileY, vector<Bug *> bug_vector);
 
 
 int main() {
@@ -161,6 +163,10 @@ int main() {
     bool shodDisplayCells = true;
     bool wasNotYetTapped = false;
 
+    int idInteger = 0;
+    bool idFinder = true;
+
+
     for (int x = 1; x <= 9; ++x) {
 
         for (int y = 1; y <= 9; ++y) {
@@ -178,18 +184,15 @@ int main() {
         idDisplay.setCharacterSize(22);
         idDisplay.setFillColor(sf::Color::White);
         idDisplay.setString(idMenu);
-        idDisplay.setPosition(200, 50+ (idLoop * 100 ));
+        idDisplay.setPosition(200, 50 + (idLoop * 100));
 
-        if(idLoop%2==0){
-            idDisplay.setPosition(200, 50+ (idLoop * 100 ));
-        }else{
-            idDisplay.setPosition(400, 50+ ((idLoop-1) * 100 ));
+        if (idLoop % 2 == 0) {
+            idDisplay.setPosition(200, 50 + (idLoop * 100));
+        } else {
+            idDisplay.setPosition(400, 50 + ((idLoop - 1) * 100));
         }
         idDisplays.push_back(idDisplay);
     }
-
-
-
 
 
     while (window.isOpen()) {
@@ -198,8 +201,8 @@ int main() {
         sf::Event event;
 
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed){
-                (new  Board())->exitProgram(bug_vector, bug_vector.size());
+            if (event.type == sf::Event::Closed) {
+                (new Board())->exitProgram(bug_vector, bug_vector.size());
                 window.close();
             }
 
@@ -218,33 +221,39 @@ int main() {
             } else if (txt_dispAllBugs.getGlobalBounds().contains(mousePosition)) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     showDisplayBugs = false;
-                    showExitButton= false;
+                    showExitButton = false;
                 }
-            }
-            else if (txt_findByID.getGlobalBounds().contains(mousePosition)) {
+            } else if (txt_findByID.getGlobalBounds().contains(mousePosition)) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     showFindByID = false;
-                    showExitButton= false;
+                    showExitButton = false;
                 }
-            }
-
-            else if (txt_displayAllCells.getGlobalBounds().contains(mousePosition)) {
+            } else if (txt_displayAllCells.getGlobalBounds().contains(mousePosition)) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     shodDisplayCells = false;
-                    showExitButton= false;
+                    showExitButton = false;
                 }
-            }
-
-            else if (txt_goBack.getGlobalBounds().contains(mousePosition)) {
+            } else if (txt_goBack.getGlobalBounds().contains(mousePosition)) {
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     showDisplayBugs = true;
                     showFindByID = true;
                     shodDisplayCells = true;
-                    showExitButton= true;
+                    showExitButton = true;
+                    idFinder = true;
                 }
             }
 
 
+            for (int i = 0; i < idDisplays.size(); i++) {
+                if (idDisplays.at(i).getGlobalBounds().contains(mousePosition)) {
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                            string idString = idDisplays.at(i).getString();
+                            idInteger = stoi(idString);
+                            idFinder = false;
+
+                    }
+                }
+            }
         }
 
         window.clear();
@@ -256,31 +265,58 @@ int main() {
             window.draw(txt_dispAllBugs);
             window.draw(txt_findByID);
             window.draw(txt_displayAllCells);
-        } else if(!showDisplayBugs){
+        } else if (!showDisplayBugs) {
             window.clear();
             window.draw(txt_goBack);
             (new Board())->displayAllBugs(window, bug_vector, bug_vector.size());
 
-        } else if(!showFindByID){
+        } else if (!showFindByID) {
             window.clear();
-            window.draw(txt_findByID);
             window.draw(txt_goBack);
 
+            if (idFinder) {
+                for (int i = 0; i < idDisplays.size(); i++) {
+                    window.draw(idDisplays.at(i));
+                }
+            } else {
+                sf::Text singleBugText;
+                singleBugText.setFont(font);
+                singleBugText.setCharacterSize(36);
+                singleBugText.setFillColor(sf::Color::White);
 
+                for (int j = 0; j < bug_vector.size(); j++) {
 
-            for(int i=0;i<idDisplays.size();i++){
-                window.draw(idDisplays.at(i));
+                    if (bug_vector.at(j)->getId() == idInteger) {
+                        string bug_info="";
+
+                        if(bug_vector.at(j)->getType() == 'C'){
+                            bug_info = "Crawler: \n\n";
+                        }else if(bug_vector.at(j)->getType() == 'H'){
+                            bug_info = "Hopper: \n\n";
+                        }else{
+                            bug_info = "El Diagonal: \n\n";
+                        }
+                         bug_info += "id: " + to_string(bug_vector.at(j)->getId()) + "\n"
+                                          + "direction: " + to_string(bug_vector.at(j)->getDirection()) + "\n"
+                                          + "X position: " + to_string(bug_vector.at(j)->getPosition().getX()) + "\n"
+                                          + "Y position: " + to_string(bug_vector.at(j)->getPosition().getY()) + "\n"
+                                          + "alive: " + (bug_vector.at(j)->getAlive() ? "true" : "false") + "\n"
+                                          + "size: " + to_string(bug_vector.at(j)->getSize()) + "\n";
+
+                        singleBugText.setString(bug_info);
+                    }
+                }
+
+                singleBugText.setPosition(200, 200);
+                window.draw(singleBugText);
             }
 
 
-        }
-        else if(!shodDisplayCells){
+        } else if (!shodDisplayCells) {
             window.clear();
             window.draw(txt_displayAllCells);
             window.draw(txt_goBack);
-        }
-
-        else if(!showExitButton) {
+        } else if (!showExitButton) {
 
             //draw a board
             //tutorial: https://www.sfml-dev.org/tutorials/2.0/graphics-shape.php
@@ -303,8 +339,8 @@ int main() {
             for (int tileC = 0; tileC < tiles.size(); tileC++) {
                 eatBugsAndDisplayThat(
 
-                       bug_vectorEat, bug_vectorBigEquals, bug_vectorSmallBugs,  tileX,  tiles,
-                        tileC,  tileY, bug_vector);
+                        bug_vectorEat, bug_vectorBigEquals, bug_vectorSmallBugs, tileX, tiles,
+                        tileC, tileY, bug_vector);
             }
             window.display();
 
@@ -370,21 +406,6 @@ int main() {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
     ifstream file(fileName);
 
@@ -430,9 +451,11 @@ void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
 }
 
 
-void eatBugsAndDisplayThat(vector<Bug*> bug_vectorEat, vector<Bug*> bug_vectorBigEquals, vector<Bug*> bug_vectorSmallBugs, int tileX,
-vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector
-){
+void
+eatBugsAndDisplayThat(vector<Bug *> bug_vectorEat, vector<Bug *> bug_vectorBigEquals, vector<Bug *> bug_vectorSmallBugs,
+                      int tileX,
+                      vector<Tile> tiles, int tileC, int tileY, vector<Bug *> bug_vector
+) {
 
     bug_vectorBigEquals.clear();
     bug_vectorEat.clear();
@@ -512,7 +535,8 @@ vector <Tile> tiles, int tileC, int tileY, vector<Bug*> bug_vector
     }
 }
 
-void moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vector<Bug *> bug_vector, int tileSize,
+void
+moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vector<Bug *> bug_vector, int tileSize,
                        int padding, vector<Tile> tiles, char typeOfBugCheck, int tileLoop) {
 
 
