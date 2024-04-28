@@ -46,13 +46,25 @@ struct Tile {
         return populated;
     }
 
+
     void setPopulation(int population) {
         populated = population;
     }
 
+    void setBugIdInTile(Bug *newBug) {
+        bugsIdVector.push_back(newBug);
+    }
+
+    vector<Bug *> getBugsIdInTile() const {
+        return bugsIdVector;
+    }
+
+
+
     int x;
     int y;
     int populated;
+    vector<Bug *> bugsIdVector;
     //0 - empty
     //1 - crawler - red
     //2 - hopper - blue
@@ -81,7 +93,6 @@ eatBugsAndDisplayThat(vector<Bug *> bug_vectorEat, vector<Bug *> bug_vectorBigEq
 int main() {
     sf::RenderWindow window(sf::VideoMode(600, 600), "SFML Application");
 
-
     //bug vector
     vector<Bug *> bug_vectorEat;
     vector<Bug *> bug_vectorBigEquals;
@@ -89,7 +100,7 @@ int main() {
     vector<Bug *> bug_vector;
 
 
-    Crawler *craw = new Crawler('C', 1, 4, 4, 1, 3, "ALIVE");
+    Crawler *craw = new Crawler('C', 1, 1, 1, 1, 3, "ALIVE");
     bug_vector.push_back(craw);
 
     El_Diagonal *pElDiagonal = new El_Diagonal('D', 3, 1, 5, 5, 3, "ALIVE");
@@ -97,7 +108,6 @@ int main() {
 
     Hopper *hopp = new Hopper('H', 2, 3, 6, 4, 2, 2, "ALIVE");
     bug_vector.push_back(hopp);
-
     Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
     bug_vector.push_back(craw2);
     Crawler *craw3 = new Crawler('C', 5, 8, 7, 1, 3, "ALIVE");
@@ -108,6 +118,7 @@ int main() {
     vector<Tile> tiles;
     int typeOfPupulationNumber = 0;
     char typeOfBugCheck = ' ';
+    bool runDisplayAllCells = true;
 
     sf::Font font;
     if (!font.loadFromFile("C:/Users/noah3/OneDrive/CAs/cppCA2/Roboto-Medium.ttf")) {
@@ -240,17 +251,16 @@ int main() {
                     shodDisplayCells = true;
                     showExitButton = true;
                     idFinder = true;
+                    runDisplayAllCells= true;
                 }
             }
-
 
             for (int i = 0; i < idDisplays.size(); i++) {
                 if (idDisplays.at(i).getGlobalBounds().contains(mousePosition)) {
                     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                            string idString = idDisplays.at(i).getString();
-                            idInteger = stoi(idString);
-                            idFinder = false;
-
+                        string idString = idDisplays.at(i).getString();
+                        idInteger = stoi(idString);
+                        idFinder = false;
                     }
                 }
             }
@@ -287,21 +297,21 @@ int main() {
                 for (int j = 0; j < bug_vector.size(); j++) {
 
                     if (bug_vector.at(j)->getId() == idInteger) {
-                        string bug_info="";
+                        string bug_info = "";
 
-                        if(bug_vector.at(j)->getType() == 'C'){
+                        if (bug_vector.at(j)->getType() == 'C') {
                             bug_info = "Crawler: \n\n";
-                        }else if(bug_vector.at(j)->getType() == 'H'){
+                        } else if (bug_vector.at(j)->getType() == 'H') {
                             bug_info = "Hopper: \n\n";
-                        }else{
+                        } else {
                             bug_info = "El Diagonal: \n\n";
                         }
-                         bug_info += "id: " + to_string(bug_vector.at(j)->getId()) + "\n"
-                                          + "direction: " + to_string(bug_vector.at(j)->getDirection()) + "\n"
-                                          + "X position: " + to_string(bug_vector.at(j)->getPosition().getX()) + "\n"
-                                          + "Y position: " + to_string(bug_vector.at(j)->getPosition().getY()) + "\n"
-                                          + "alive: " + (bug_vector.at(j)->getAlive() ? "true" : "false") + "\n"
-                                          + "size: " + to_string(bug_vector.at(j)->getSize()) + "\n";
+                        bug_info += "id: " + to_string(bug_vector.at(j)->getId()) + "\n"
+                                    + "direction: " + to_string(bug_vector.at(j)->getDirection()) + "\n"
+                                    + "X position: " + to_string(bug_vector.at(j)->getPosition().getX()) + "\n"
+                                    + "Y position: " + to_string(bug_vector.at(j)->getPosition().getY()) + "\n"
+                                    + "alive: " + (bug_vector.at(j)->getAlive() ? "true" : "false") + "\n"
+                                    + "size: " + to_string(bug_vector.at(j)->getSize()) + "\n";
 
                         singleBugText.setString(bug_info);
                     }
@@ -316,6 +326,78 @@ int main() {
             window.clear();
             window.draw(txt_displayAllCells);
             window.draw(txt_goBack);
+
+
+            if(runDisplayAllCells){
+            for (int tileLoop = 0; tileLoop < tiles.size(); tileLoop++) {
+                typeOfPupulationNumber= 0;
+                for (int j = 0; j < bug_vector.size(); j++) {
+                    if (bug_vector.at(j)->getState() == "ALIVE") {
+                        if (bug_vector.at(j)->getPosition().getX() == tiles.at(tileLoop).getX()
+                            && bug_vector.at(j)->getPosition().getY() == tiles.at(tileLoop).getY()
+                            ) {
+                            typeOfBugCheck = bug_vector.at(j)->getType();
+                            if (typeOfBugCheck == 'C') {
+                                typeOfPupulationNumber = 1;
+                                tiles.at(tileLoop).setBugIdInTile(bug_vector.at(j));
+
+                            } else if (typeOfBugCheck == 'H') {
+                                typeOfPupulationNumber = 2;
+                                tiles.at(tileLoop).setBugIdInTile(bug_vector.at(j));
+
+                            } else {
+                                typeOfPupulationNumber = 3;
+                                tiles.at(tileLoop).setBugIdInTile(bug_vector.at(j));
+
+                            }
+                        }
+                        tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
+                    }
+                }
+            }
+
+            for (int i = 0; i < tiles.size(); i++) {
+                string tileData = "\n(";
+                tileData += to_string(tiles.at(i).getX());
+                tileData += ", ";
+                tileData += to_string(tiles.at(i).getY());
+                tileData += ")";
+                tileData += ": ";
+
+
+                //0 - empty
+                //1 - crawler - red
+                //2 - hopper - blue
+                //3 - el diagonal - yellow
+
+                if (tiles.at(i).getPopulated() == 0) {
+                    tileData += "empty";
+                } else {
+                    for (int j = 0; j < tiles.at(i).getBugsIdInTile().size(); j++) {
+
+                        if (tiles.at(i).getBugsIdInTile().at(j)->getType() == 'C'
+                                ) {
+                            tileData += "Crawler ";
+                        } else if (tiles.at(i).getBugsIdInTile().at(j)->getType() == 'H'
+                                ) {
+                            tileData += "Hopper ";
+                        } else if (tiles.at(i).getBugsIdInTile().at(j)->getType() == 'D'
+                                ) {
+                            tileData += "El Diagonal ";
+                        }
+                        tileData += to_string(tiles.at(i).getBugsIdInTile().at(j)->getId());
+
+                        if(j != tiles.at(i).getBugsIdInTile().size() - 1){
+                            tileData += ", ";
+                        }
+                    }
+                }
+                cout << tileData << endl;
+            }
+            runDisplayAllCells= false;
+        }
+
+
         } else if (!showExitButton) {
 
             //draw a board
@@ -560,13 +642,13 @@ moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vec
                 }
             }
             tiles.at(tileLoop).setPopulation(typeOfPupulationNumber);
+            tiles.at(tileLoop).setBugIdInTile(bug_vector.at(j));
+
+
         } else {
             Pair newPos = *new Pair(20, 20);
             bug_vector.at(j)->setPosition(newPos);
-
         }
-
-
     }
     //2.2. checking the color
 
