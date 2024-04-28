@@ -170,7 +170,7 @@ int main() {
     bool runDisplayAllCells = true;
 
     sf::Font font;
-    if (!font.loadFromFile("C:/Users/noah3/OneDrive/CAs/cppCA2/Roboto-Medium.ttf")) {
+    if (!font.loadFromFile("../Roboto-Medium.ttf")) {
         std::cerr << "Error loading font\n";
         return 1;
     }
