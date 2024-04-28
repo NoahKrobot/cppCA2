@@ -28,9 +28,6 @@ void runSimulation();
 
 void exitProgram();
 
-void readBugsFromFile(vector<Bug *> &bug_vector, const string &file_name);
-
-
 sf::Font font;
 
 struct Tile {
@@ -99,19 +96,6 @@ int main() {
     vector<Bug *> bug_vectorSmallBugs;
     vector<Bug *> bug_vector;
 
-//
-//    Crawler *craw = new Crawler('C', 1, 1, 1, 1, 3, "ALIVE");
-//    bug_vector.push_back(craw);
-//
-//    El_Diagonal *pElDiagonal = new El_Diagonal('D', 3, 1, 5, 5, 3, "ALIVE");
-//    bug_vector.push_back(pElDiagonal);
-//
-//    Hopper *hopp = new Hopper('H', 2, 3, 6, 4, 2, 2, "ALIVE");
-//    bug_vector.push_back(hopp);
-//    Crawler *craw2 = new Crawler('C', 4, 8, 7, 1, 3, "ALIVE");
-//    bug_vector.push_back(craw2);
-//    Crawler *craw3 = new Crawler('C', 5, 8, 7, 1, 3, "ALIVE");
-//    bug_vector.push_back(craw3);
 
 
     ifstream file("../bugsFile.txt");
@@ -490,11 +474,6 @@ int main() {
 }
 
 
-void readBugsFromFile(vector<Bug *> &bug_vector, const string &fileName) {
-
-}
-
-
 void
 eatBugsAndDisplayThat(vector<Bug *> bug_vectorEat, vector<Bug *> bug_vectorBigEquals, vector<Bug *> bug_vectorSmallBugs,
                       int tileX,
@@ -637,7 +616,6 @@ moveBugsAndDisplayThem(sf::RenderWindow &window, int typeOfPupulationNumber, vec
         singleTileShape.setFillColor(sf::Color::Cyan);
     }
     window.draw(singleTileShape);
-
 }
 
 
